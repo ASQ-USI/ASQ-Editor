@@ -53,6 +53,14 @@ var ThumbManager = function (options, $){
       triggerEvent(document, "thumbmanager:thumb-clicked", {thumbId: thumbId, slideRefId: slideRefId}) 
     });
 
+    $(sels.thumbsBarId).on("click", '.' + sels.thumbContainerClass + " .closebuttonclass", function(e){
+      var $thumbStep = $(this).parent().find('.' + sels.slideThumbClass)
+      , thumbId = $thumbStep.attr('id')
+      , slideRefId = $thumbStep.data('references');
+
+      triggerEvent(document, "thumbmanager:thumb-delete", {thumbId: thumbId, slideRefId: slideRefId}) 
+    });
+
     $(sels.dragBarId).on("mousedown.dragbar",function(e){
       e.preventDefault();
       var $document = $(document)
@@ -111,6 +119,10 @@ var ThumbManager = function (options, $){
   }
 
   ThumbManager.prototype.updateThumb = function(){}
+
+  ThumbManager.prototype.deleteThumb = function(stepId){}
+
+  ThumbManager.prototype.selectThumb = function(stepId){}
 
   ThumbManager.prototype.insertThumb = function(){}
 

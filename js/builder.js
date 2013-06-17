@@ -239,15 +239,20 @@ var builder = (function () {
     $(document).on('thumbmanager:thumb-clicked', function(event){
       console.log(event.originalEvent.detail.thumbId)
       console.log(event.originalEvent.detail.slideRefId)
+
+      //select step in impress
+
+      //update thumbManager
+      taskManager.selectThumb(slideRefId);
     });
 
     //GIORGOS: Auto einai etoimo aplws sou exw console log
     // ta properties pou epistrefei to event. svhsta otan 
     // katalaveis ti ginetai
     $(document).on('thumbmanager:thumb-sorted', function(event){
-      console.log(event.originalEvent.detail.thumbId)
-      console.log(event.originalEvent.detail.slideRefId)
-      console.log(event.originalEvent.detail.newIndex)
+      // console.log(event.originalEvent.detail.thumbId)
+      // console.log(event.originalEvent.detail.slideRefId)
+      // console.log(event.originalEvent.detail.newIndex)
 
       var detail    = event.originalEvent.detail
       , thumbId     = detail.thumbId
@@ -262,6 +267,17 @@ var builder = (function () {
         $("#"+slideRefId).insertBefore($(".step:not(#overview)").eq(0))
       }
 
+    });
+
+    $(document).on('thumbmanager:thumb-delete', function(event){
+      var detail    = event.originalEvent.detail
+      , thumbId     = detail.thumbId
+      , slideRefId  = detail.slideRefId
+
+      //delete thumbnail
+
+      //update thumbs
+      taskManager.deleteThumb(slideRefId);
     });
 
     $('.button.save').on('click', function () { asqEditor.save(); });
