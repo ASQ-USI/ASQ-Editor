@@ -620,9 +620,9 @@
       // Create the menu wrapper and the element that will be cloned
       // for each entry.
       //  console.log('showMenu')
-      var menu = document.createElement('ul'),
+      var menu = document.createElement('div'),
         frag = document.createDocumentFragment(),
-        el = document.createElement('li');
+        el = document.createElement('div');
 
       // Apply some classes
       menu.className = 'menu';
@@ -630,11 +630,10 @@
 
       // Create an element that will be the "button" and append it
       // to the menu
-
-      // var button = document.createElement('div');
-      // button.className = 'menu-button';
-      // button.textContent = '';
-      // menu.appendChild(button);
+      var button = document.createElement('div');
+      button.className = 'menu-button';
+      button.textContent = '';
+      menu.appendChild(button);
 
       // Now, for each div in the first element child of  #impress,
       // add an entry to the menu         
@@ -648,7 +647,7 @@
           text = i + '. ' + capitalize(child.id);
 
         // Set the text of the new element
-        newEl.innerHTML = '<a href="#/' + child.id + '">' + text + '</a>';
+        newEl.innerHTML = '<a href="#/' + child.id + '" title="' + text + '">&bull;</a>';
         newEl.id = "m-" + child.id;
 
         // Add an onclick event to the new element
@@ -679,7 +678,6 @@
       // Appending it to #impress would mess things up, since
       // `position: absolute` wouldn't work anymore in it.
       document.body.appendChild(menu);
-      //document.getElementById('timeline').appendChild(menu)
     };
 
     //END PATCH
