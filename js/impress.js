@@ -441,7 +441,7 @@
     //function to delete a step, by number, id or dom
     var deleteStep = function(callback){
       var fhalf,shalf,i;
-    //  console.log(getStep(callback));
+      //console.log(getStep(callback));
       for (i in steps){
         if(getStep(callback)==steps[i]){
           fhalf=steps.slice(0,i)

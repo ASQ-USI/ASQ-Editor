@@ -240,10 +240,13 @@ var builder = (function () {
       console.log(event.originalEvent.detail.thumbId)
       console.log(event.originalEvent.detail.slideRefId)
 
+      // navigate to the step that is clicked from the thumbs
+      config['goto'](event.originalEvent.detail.slideRefId)
+
       //select step in impress
 
       //update thumbManager
-      taskManager.selectThumb(slideRefId);
+      //taskManager.selectThumb(slideRefId);
     });
 
     //GIORGOS: Auto einai etoimo aplws sou exw console log
@@ -270,14 +273,32 @@ var builder = (function () {
     });
 
     $(document).on('thumbmanager:thumb-delete', function(event){
+
       var detail    = event.originalEvent.detail
       , thumbId     = detail.thumbId
       , slideRefId  = detail.slideRefId
 
       //delete thumbnail
 
+      var r = confirm("Are you sure you want to delete this slide?");
+
+      if (r == true) {
+
+        //delete step
+        // config.deleteStep(slideRefId);
+        // $('#' + slideRefId).remove();
+        console.log('deleted step with id: ' + slideRefId);
+
+        $('#' + thumbId).parent().fadeOut("slow", function() {
+          $(this).remove();
+          config.deleteStep(slideRefId);
+          $('#' + slideRefId).remove();
+          config['goto']("overview");
+        });
+      }
+
       //update thumbs
-      taskManager.deleteThumb(slideRefId);
+      //taskManager.deleteThumb(slideRefId);
     });
 
     $('.button.save').on('click', function () { asqEditor.save(); });
@@ -560,7 +581,7 @@ var builder = (function () {
         //console.log(  config)
         el.remove();
         // make showmenu not to display the deleted slides
-        config.showMenu();
+        //config.showMenu();
         config['goto']("overview");
       }
     }

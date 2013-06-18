@@ -336,7 +336,7 @@ a.back-button:hover {
             Modal Window
 ***********************************************/
 
-.modal-overlay  {
+/*.modal-overlay  {
   position:fixed;  
   top:0;  
   right:0;  
@@ -418,7 +418,7 @@ a.back-button:hover {
 
 .theme .text {
   font-size: 14pt;
-}
+}*/
 
 /**********************************************
             Sliders
@@ -511,10 +511,14 @@ a.back-button:hover {
   transition: all 0.3s ease;
 }
 
-.primary {
+.sidebar .primary {
   width: 100%;
   margin-top: 10px;
-  padding: 0 10px;
+ 
+}
+
+.sidebar .primary {
+ text-align: center;
 }
 
 .primary .button {
@@ -789,8 +793,8 @@ a.back-button:hover {
   background: rgb(40, 41, 41);
   font-size: 17px;
   border-right: 1px solid rgba(0,0,0,0.1);
-  overflow-x: hidden;
-  overflow-y: scroll;
+/*  overflow-x: hidden;
+  overflow-y: scroll;*/
   text-align: center;
 /*  -webkit-transition: all 0.3s ease;
   -moz-transition: all 0.3s ease;
@@ -798,6 +802,18 @@ a.back-button:hover {
   -o-transition: all 0.3s ease;
   transition: all 0.3s ease;
 */}
+
+#thumb-holder {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: -moz-calc(100% - 100px);
+  height: -webkit-calc(100% - 100px);
+  height: calc(100% - 100px)
+}
+
+.thumb {
+  position: relative;
+}
 
 #thumbs-bar #dragbar{
    background-color: #888;
@@ -826,7 +842,6 @@ a.back-button:hover {
   text-align: center;
   border: none;
   cursor: pointer;
-  border-radius: 2px;
 }
 
 .button.back {
@@ -856,4 +871,28 @@ a.back-button:hover {
   border: none;
   cursor: pointer;
   margin: -15px;
+}
+
+.close {
+  position: absolute;
+  top: -6px;
+  left: -6px;
+  display: block;
+  width: 18px;
+  border-radius: 14px;
+  border: 1px solid white;
+  background: #333;
+  text-align: center;
+  text-decoration: none;
+  color: white;
+  font-family: "Helvetica-Neue", "Helvetica";
+  font-weight: 300;
+  font-size: 12px;
+  line-height: 18px;
+  height: 18px;
+  opacity:1;
+}
+
+#close:visited{
+    color:white;
 }

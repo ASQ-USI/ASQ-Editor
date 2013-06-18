@@ -53,7 +53,7 @@ var ThumbManager = function (options, $){
       triggerEvent(document, "thumbmanager:thumb-clicked", {thumbId: thumbId, slideRefId: slideRefId}) 
     });
 
-    $(sels.thumbsBarId).on("click", '.' + sels.thumbContainerClass + " .closebuttonclass", function(e){
+    $(sels.thumbsBarId).on("click", '.' + sels.thumbContainerClass + " .close", function(e){
       var $thumbStep = $(this).parent().find('.' + sels.slideThumbClass)
       , thumbId = $thumbStep.attr('id')
       , slideRefId = $thumbStep.data('references');
@@ -94,10 +94,15 @@ var ThumbManager = function (options, $){
       $(sels.thumbsBarId + ' ' + sels.thumbsHolderId).append($this)
       $this
         .wrap('<div class="'+ sels.thumbContainerClass +'"></div>')
+
       this.style["-webkit-transform-origin"] = "0 0";
+      this.style["-moz-transform-origin"] = "0 0";
        $this.parent()
         .css("background", $('body').css('background'));
     })
+
+    // add the detele butoon to each thumb
+    $('<a class="close" href="#">X</a>').appendTo('.' + sels.thumbContainerClass); 
 
     that.resizeThumbs();
 
@@ -114,13 +119,18 @@ var ThumbManager = function (options, $){
 
         triggerEvent(document, "thumbmanager:thumb-sorted", {thumbId : thumbId, slideRefId : slideRefId, newIndex : newIndex}) 
       }
-    })
+    },
+    {axis: 'y'}
+    )
   
   }
 
   ThumbManager.prototype.updateThumb = function(){}
 
-  ThumbManager.prototype.deleteThumb = function(stepId){}
+  ThumbManager.prototype.deleteThumb = function(stepId){
+
+      console.log('delete works!');
+  }
 
   ThumbManager.prototype.selectThumb = function(stepId){}
 
@@ -142,6 +152,7 @@ var ThumbManager = function (options, $){
       , scaleFactor =  thumbContentWidth / $this.outerWidth();
 
       this.style["-webkit-transform"] = "scale("+scaleFactor+")";
+      this.style["transform"] = "scale("+scaleFactor+")";
       $this.parent()
         .css({
           "width"  : parseInt($this.outerWidth() * scaleFactor) + "px",
@@ -240,5 +251,3 @@ var ThumbManager = function (options, $){
   
 
 }
-
-

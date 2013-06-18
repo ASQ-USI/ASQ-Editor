@@ -119,6 +119,9 @@ function LayoutManager (options, $){
     .on('mousedown mousewheel', '.sidebar', function(event) {
       event.stopPropagation(); // prevent all the handlers of viewport
     })
+    .on('mousedown mousewheel', '.thumbs-bar', function(event) {
+      event.stopPropagation(); // prevent all the handlers of viewport
+    })
     .on('click', '.alignment-row', function(event) {
       event.preventDefault();
       that.alignHorizontally();
