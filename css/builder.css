@@ -811,23 +811,24 @@ a.back-button:hover {
   height: calc(100% - 100px)
 }
 
-.thumb {
-  position: relative;
-}
-
 #thumbs-bar #dragbar{
-   background-color: #888;
-   height:100%;
-   float: left;
-   width: 3px;
-   cursor: col-resize;
+  background-color: #aaa;
+  height:100%;
+  float: left;
+  width: 2px;
+  cursor: col-resize;
 }
 
 #thumbs-bar .thumb{
   background : white;
+  position: relative;
   border : 2px solid white;
-  margin : 5px 5px 7px 7px;
+  margin : 14px 14px 14px 12px;
   padding : 10px;
+}
+
+#thumbs-bar .thumb:hover{
+  border : 2px solid rgb(18, 235, 143);
 }
 
 #thumbs-bar .thumb.ui-sortable-helper{
@@ -875,18 +876,18 @@ a.back-button:hover {
 
 .close {
   position: absolute;
-  top: -6px;
-  left: -6px;
+  top: -11px;
+  right: -11px;
   display: block;
   width: 18px;
   border-radius: 14px;
   border: 1px solid white;
-  background: #333;
+  background: rgb(40, 41, 41);
   text-align: center;
   text-decoration: none;
   color: white;
   font-family: "Helvetica-Neue", "Helvetica";
-  font-weight: 300;
+  font-weight: 500;
   font-size: 12px;
   line-height: 18px;
   height: 18px;
@@ -895,4 +896,12 @@ a.back-button:hover {
 
 #close:visited{
     color:white;
+}
+
+.thumb .close{
+  display:none;
+}
+
+.thumb:hover .close{
+  display:block;
 }

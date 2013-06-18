@@ -85,7 +85,7 @@
 </div>
 
 <div class="thumbs-bar" id="thumbs-bar">
-
+  <div id="dragbar"></div>
   <div class="primary">
     <button class="button add" title="Add new slide">
       <span class="iconic i-plus"></span>
@@ -93,7 +93,7 @@
   </div>
   <div class="divider"></div>
 
-  <div id="dragbar"></div>
+  
   <div id="thumb-holder"></div>
 
 

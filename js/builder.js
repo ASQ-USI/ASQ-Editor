@@ -232,10 +232,6 @@ var builder = (function () {
     })
 
 
-    //GIORGOS: Edw sou epistrefw sto slideRefId to id tou step
-    // pou antistoixei sto thumb pou patithike
-    // To mono pou prepei na kaneis einai na to kaneis highlight
-    // kai pithanws na to valeis sto selection
     $(document).on('thumbmanager:thumb-clicked', function(event){
       console.log(event.originalEvent.detail.thumbId)
       console.log(event.originalEvent.detail.slideRefId)
@@ -288,7 +284,9 @@ var builder = (function () {
         // config.deleteStep(slideRefId);
         // $('#' + slideRefId).remove();
         console.log('deleted step with id: ' + slideRefId);
-
+        // GIORGOS: the deleition of the thumbnail should be carried out
+        // by the deleteThumb method of the Thumbmanager which you need to
+        // implement
         $('#' + thumbId).parent().fadeOut("slow", function() {
           $(this).remove();
           config.deleteStep(slideRefId);

@@ -101,7 +101,7 @@ var ThumbManager = function (options, $){
         .css("background", $('body').css('background'));
     })
 
-    // add the detele butoon to each thumb
+    // add the delete button to each thumb
     $('<a class="close" href="#">X</a>').appendTo('.' + sels.thumbContainerClass); 
 
     that.resizeThumbs();
