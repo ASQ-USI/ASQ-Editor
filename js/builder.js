@@ -39,7 +39,8 @@ var builder = (function () {
     handlers = {},
     redrawTimeout,
     //nodes
-    $menu, $controls, $overview, $sliders;
+    $menu, $controls, $overview, $sliders
+    , layoutManager, thumbManager;
 
   selection.hasstate = function (s) {
    // console.log('Checking ' + s.$node.attr('id'));
@@ -138,6 +139,27 @@ var builder = (function () {
     state.data.rotateY += v.x * config.rotateStep % 360;  // added % 360
   };//new
 
+  var layoutRendered = function(err,out){
+    $('body').append(out);
+
+    layoutManager = new LayoutManager(
+    { 
+      selection : selection,
+      redrawFunction : config.redrawFunction
+    }, jQuery);
+
+    thumbManager = new ThumbManager(
+    { 
+      sels : {
+        thumbsBarId: "#thumbs-bar",
+        thumbsHolderId    : "#thumb-holder",
+        thumbContainerClass  : "thumb",
+        slideThumbClass : "thumb-step",
+        dragBarId: "#thumbs-bar #dragbar",
+      }
+    }, jQuery);
+  }
+
   function init(conf) {
 
     config = $.extend(config, conf);
@@ -160,46 +182,6 @@ var builder = (function () {
     $('body').addClass('edit');
     $overview = $('#overview');
 
-    // Main controls
-    //$menu = $('<div id="builder-main"></div>');
-   // $('<div class="builder-bt"></div>').appendTo($menu).text('Save').on('click', SaveContent); // TODO
-   // $('<div class="builder-bt"></div>').appendTo($menu).text('Preview'); // TODO
-   // $('<div class="builder-bt"></div>').appendTo($menu).text('Settings').on('click', openMyModal);
-   // $('<div class="builder-bt"></div>').appendTo($menu).text('Overview').on('click', function () { config['goto']('overview'); });
-   // $('<div class="builder-bt bt-delete"></div>').appendTo($menu).text('Delete').on('click', deleteContents);
-
-    // Add slide
-    //$('<span class="plus"></span>').wrap('<div class="bt-add-slide"></div>').text('+').parent().appendTo('body').on('click', addSlide);
-
-    // Return to presentation 
-    //$('<span></span>').wrap('<a href="#" class="back-button">◄ </a>').text('Your presentation').parent().appendTo('body').on('click', gotoPresentation);
-
-    // Sliders 
-    // $sliders = $('<div id="sliders"></div>');
-    // $('<div class="sliders-button">Position</div>').appendTo($sliders);
-    // $('<span>X: </span>').appendTo($sliders);
-    // $('<input type="text" class="slidable" step="1" min="-Infinity" max="Infinity" placeholder="X">').attr('id', 'mx').addClass('bt-text').text('Edit').appendTo($sliders);
-    // $('<span>Y: </span>').appendTo($sliders);
-    // $('<input type="text" class="slidable" step="1" min="-Infinity" max="Infinity" placeholder="Y">').attr('id', 'my').addClass('bt-text').text('Edit').appendTo($sliders);
-    // $('<span>Z: </span>').appendTo($sliders);
-    // $('<input type="text" class="slidable" step="1" min="-Infinity" max="Infinity" placeholder="Z">').attr('id', 'mz').addClass('bt-text').text('Edit').appendTo($sliders);
-
-    // $('<div class="sliders-button">Scale</div>').appendTo($sliders);
-    // $('<span>S: </span>').appendTo($sliders);
-    // $('<input type="text" class="slidable" step="0.01" min="-100" max="100" placeholder="Sz">').attr('id', 'ms').addClass('bt-text').text('Edit').appendTo($sliders);
-
-    // $('<div class="sliders-button">Rotation</div>').appendTo($sliders);
-    // $('<span>X: </span>').appendTo($sliders);
-    // $('<input type="text" class="slidable" step="1" min="-360" max="360" placeholder="Rx">').attr('id', 'mrx').addClass('bt-text').text('Edit').appendTo($sliders);
-    // $('<span>Y: </span>').appendTo($sliders);
-    // $('<input type="text" class="slidable" step="1" min="-360" max="360" placeholder="Ry">').attr('id', 'mry').addClass('bt-text').text('Edit').appendTo($sliders);
-    // $('<span>Z: </span>').appendTo($sliders);
-    // $('<input type="text" class="slidable" step="1" min="-360" max="360" placeholder="Rz">').attr('id', 'mr').addClass('bt-text').text('Edit').appendTo($sliders);
-
-
-   // $menu.appendTo('body');
-   // $sliders.appendTo('body');
-
     $controls = $('<div class="builder-controls"></div>').hide();
 
   //  $('<div class="bt-delete"></div>').attr('title', 'Delete').click(deleteContents).appendTo($controls);
@@ -209,67 +191,23 @@ var builder = (function () {
     $('<div class="bt-rotateX"></div>').attr('title', 'RotateX').data('func', 'rotateX').appendTo($controls);
 
     //render the layout HTML
-    dust.render('layout', {}, function(err,out){
-      $('body').append(out)
-      
-      //initialize the layoutManager which manages the alignment panel
-      // var layoutManager = new LayoutManager(
-      // { 
-      //   selection : selection,
-      //   redrawFunction : config.redrawFunction
-      // }, jQuery);
+    // when rendered the thumb and layout managers are instantiated
+    dust.render('layout', {}, layoutRendered);
 
-      // var thumbsManager = new ThumbManager(
-      // { 
-      //   sels : {
-      //     thumbsBarId: "#thumbs-bar",
-      //     thumbsHolderId    : "#thumb-holder",
-      //     thumbContainerClass  : "thumb",
-      //     slideThumbClass : "thumb-step",
-      //     dragBarId: "#thumbs-bar #dragbar",
-      //   }
-      // }, jQuery);
-    })
-
-    var layoutManager = new LayoutManager(
-    { 
-      selection : selection,
-      redrawFunction : config.redrawFunction
-    }, jQuery);
-
-    var thumbsManager = new ThumbManager(
-    { 
-      sels : {
-        thumbsBarId: "#thumbs-bar",
-        thumbsHolderId    : "#thumb-holder",
-        thumbContainerClass  : "thumb",
-        slideThumbClass : "thumb-step",
-        dragBarId: "#thumbs-bar #dragbar",
-      }
-    }, jQuery);
-
+    
 
 
     $(document).on('thumbmanager:thumb-clicked', function(event){
-      console.log(event.originalEvent.detail.thumbId)
-      console.log(event.originalEvent.detail.slideRefId)
+      var slideRefId = event.originalEvent.detail.slideRefId
 
-      // navigate to the step that is clicked from the thumbs
-      config['goto'](event.originalEvent.detail.slideRefId)
+      //goto and make editable the current slide
+      config['goto'](slideRefId);
 
-      //select step in impress
-
-      //update thumbManager
-      //taskManager.selectThumb(slideRefId);
+      //select thumb
+      thumbManager.selectThumb(slideRefId);
     });
 
-    //GIORGOS: Auto einai etoimo aplws sou exw console log
-    // ta properties pou epistrefei to event. svhsta otan 
-    // katalaveis ti ginetai
     $(document).on('thumbmanager:thumb-sorted', function(event){
-      // console.log(event.originalEvent.detail.thumbId)
-      // console.log(event.originalEvent.detail.slideRefId)
-      // console.log(event.originalEvent.detail.newIndex)
 
       var detail    = event.originalEvent.detail
       , thumbId     = detail.thumbId
@@ -292,29 +230,17 @@ var builder = (function () {
       , thumbId     = detail.thumbId
       , slideRefId  = detail.slideRefId
 
-      //delete thumbnail
-
       var r = confirm("Are you sure you want to delete this slide?");
 
-      if (r == true) {
+      if (r == true) {      
+        config.deleteStep(slideRefId);
+        $('#' + slideRefId).remove();
+        config['goto']("overview");
 
-        //delete step
-        // config.deleteStep(slideRefId);
-        // $('#' + slideRefId).remove();
-        console.log('deleted step with id: ' + slideRefId);
-        // GIORGOS: the deleition of the thumbnail should be carried out
-        // by the deleteThumb method of the Thumbmanager which you need to
-        // implement
-        $('#' + thumbId).parent().fadeOut("slow", function() {
-          $(this).remove();
-          config.deleteStep(slideRefId);
-          $('#' + slideRefId).remove();
-          config['goto']("overview");
-        });
+        //delete thumbnail
+        thumbManager.deleteThumb(slideRefId);
       }
 
-      //update thumbs
-      thumbsManager.deleteThumb(slideRefId);
     });
 
     $('.button.save').on('click', function () { asqEditor.save(); });
@@ -324,7 +250,7 @@ var builder = (function () {
    
     $('.button.add').on('click', function() {
       var x = addSlide();
-      thumbsManager.createThumb(x);
+      thumbManager.insertThumb(x.attr('id'));
     });
 
 
@@ -549,7 +475,7 @@ var builder = (function () {
     //query slide id
     var id, $step;
     var seq = sequence();
-    id = 'NewSlide' + seq;
+    id = 'new-slide' + seq;
     $step = $('<div class="step"></div>').html('<h1>This is a new step ' + seq + '</h1> <p>How about some contents?</p>');
     $step[0].id = id;
     $step[0].dataset.x = offset();

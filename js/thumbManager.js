@@ -48,7 +48,7 @@ var ThumbManager = function (options, $){
 
     $(sels.thumbsBarId).on("click", '.' + sels.slideThumbClass, function(e){
       var thumbId = $(this).attr('id')
-      , slideRefId = $(this).data('references');
+      , slideRefId = $(this).attr('data-references');
 
       triggerEvent(document, "thumbmanager:thumb-clicked", {thumbId: thumbId, slideRefId: slideRefId}) 
     });
@@ -56,7 +56,7 @@ var ThumbManager = function (options, $){
     $(sels.thumbsBarId).on("click", '.' + sels.thumbContainerClass + " .close", function(e){
       var $thumbStep = $(this).parent().find('.' + sels.slideThumbClass)
       , thumbId = $thumbStep.attr('id')
-      , slideRefId = $thumbStep.data('references');
+      , slideRefId = $thumbStep.attr('data-references');
 
       triggerEvent(document, "thumbmanager:thumb-delete", {thumbId: thumbId, slideRefId: slideRefId}) 
     });
@@ -89,21 +89,8 @@ var ThumbManager = function (options, $){
      that.$thumbs = that.$thumbs.add(that.createThumb($(this)))
     })
 
-    that.$thumbs.each( function(index){
-      var $this = $(this);
-      $(sels.thumbsBarId + ' ' + sels.thumbsHolderId).append($this)
-      $this
-        .wrap('<div class="'+ sels.thumbContainerClass +'"></div>')
-
-      this.style["-webkit-transform-origin"] = "0 0";
-      this.style["-moz-transform-origin"] = "0 0";
-       $this.parent()
-        .css("background", $('body').css('background'));
-    })
-
-    // add the delete button to each thumb
-    $('<a class="close" href="#">X</a>').appendTo('.' + sels.thumbContainerClass); 
-
+    //add to thumbsbar
+    that.$thumbs.each(that.injectThumb.bind(that));
     that.resizeThumbs();
 
     $(sels.thumbsHolderId).sortable({
@@ -112,7 +99,7 @@ var ThumbManager = function (options, $){
 
         var $thumbStep  = $(ui.item).find('.' + sels.slideThumbClass)
         , thumbId       = $thumbStep.attr('id')
-        , slideRefId    = $thumbStep.data('references')
+        , slideRefId    = $thumbStep.attr('data-references')
         , newIndex      = $(ui.item).index();
 
         console.log($thumbStep)
@@ -125,16 +112,72 @@ var ThumbManager = function (options, $){
   
   }
 
-  ThumbManager.prototype.updateThumb = function(){}
+  /** @function injectThumb
+  *   @description: injects a thumb to the thumb bar. index 
+  * is a parameter that jQuery each() functions pass. It's not
+  * used currently
+  */
+  ThumbManager.prototype.injectThumb = function(index, thumb){
+    var sels = this.sels
+    var $thumb = $(thumb);
 
-  ThumbManager.prototype.deleteThumb = function(stepId){
+    $(sels.thumbsBarId + ' ' + sels.thumbsHolderId).append($thumb)
+    $thumb
+      .wrap('<div class="'+ sels.thumbContainerClass +'"></div>')
 
-      console.log('delete works!');
+    thumb.style["-webkit-transform-origin"] = "0 0";
+    thumb.style["-moz-transform-origin"] = "0 0";
+     $thumb.parent()
+      .css("background", $('body').css('background'))
+      // add the delete button to each thumb
+      .append('<a class="close" href="#">X</a>');
   }
 
-  ThumbManager.prototype.selectThumb = function(stepId){}
 
-  ThumbManager.prototype.insertThumb = function(){}
+  /** @function updateThumb
+  *   @description: updates the thumb that corresponds to
+  * stepId to much the contents and style of it (the stepId slide)
+  */
+  ThumbManager.prototype.updateThumb = function(stepId){
+    var $newThumb = this.createThumb($('#' + stepId));
+
+    // update our thumbs array
+    this.$thumbs.filter('[data-references='+ stepId+']').replaceWith($newThumb);
+    //update in thumbs-bar
+    $('.' + this.sels.slideThumbClass+'[data-references='+ stepId+']').replaceWith($newThumb);
+  }
+
+  /** @function deleteThumb
+  *   @description: deletes the thumb that corresponds to the 
+  * specified stepId
+  */
+  ThumbManager.prototype.deleteThumb = function(stepId){
+  $('.' + this.sels.slideThumbClass+'[data-references='+ stepId+']')
+    .parent().fadeOut("slow", function() {
+      $(this).remove();
+    });
+  }
+
+  /** @function selectThumb
+  *   @description: Highlight the thumb that corresponds to the
+  * specified thumb id
+  */
+  ThumbManager.prototype.selectThumb = function(stepId){
+    $('.' + this.sels.thumbContainerClass).removeClass('active')
+    $('.' + this.sels.slideThumbClass+'[data-references='+ stepId+']').parent().addClass('active');
+  }
+
+  /** @function insertThumb
+  *   @description: given a step id it creates the corresponding
+  * thumb and adds it to the thumbar
+  */
+  ThumbManager.prototype.insertThumb = function(stepId){
+    var $newThumb = this.createThumb($('#' + stepId));
+    this.$thumbs = this.$thumbs.add($newThumb);
+
+    this.injectThumb(0, $newThumb[0])
+    that.resizeThumbs();
+  }
 
   /** @function resizeThumbs
   *   @description: resizes all thumbs to fit their container width
@@ -181,16 +224,15 @@ var ThumbManager = function (options, $){
       //copy original computed style
       .css(that.css($orig))
       //add reference to original slide
-      .data('references', $orig.attr('id'))
+      .attr('data-references', $orig.attr('id'))
 
     var $cloneChildren = $clone.find('*');
     //copy original computed style for children
     $orig.find('*').each(function(index){
       var id = $cloneChildren.eq(index).attr("id");
       $cloneChildren.eq(index)
-        //change id only if not empty
-        .attr("id", (id === undefined || id == '') ? '' : id + "-thumb")
-        .attr("class", "")
+        .removeAttr("id")
+        .removeAttr("class")
         //copy original computed style
         .css(that.css($(this)));
     });
