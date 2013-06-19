@@ -213,23 +213,41 @@ var builder = (function () {
       $('body').append(out)
       
       //initialize the layoutManager which manages the alignment panel
-      var layoutManager = new LayoutManager(
-      { 
-        selection : selection,
-        redrawFunction : config.redrawFunction
-      }, jQuery);
+      // var layoutManager = new LayoutManager(
+      // { 
+      //   selection : selection,
+      //   redrawFunction : config.redrawFunction
+      // }, jQuery);
 
-      var thumbsManager = new ThumbManager(
-      { 
-        sels : {
-          thumbsBarId: "#thumbs-bar",
-          thumbsHolderId    : "#thumb-holder",
-          thumbContainerClass  : "thumb",
-          slideThumbClass : "thumb-step",
-          dragBarId: "#thumbs-bar #dragbar",
-        }
-      }, jQuery);
+      // var thumbsManager = new ThumbManager(
+      // { 
+      //   sels : {
+      //     thumbsBarId: "#thumbs-bar",
+      //     thumbsHolderId    : "#thumb-holder",
+      //     thumbContainerClass  : "thumb",
+      //     slideThumbClass : "thumb-step",
+      //     dragBarId: "#thumbs-bar #dragbar",
+      //   }
+      // }, jQuery);
     })
+
+    var layoutManager = new LayoutManager(
+    { 
+      selection : selection,
+      redrawFunction : config.redrawFunction
+    }, jQuery);
+
+    var thumbsManager = new ThumbManager(
+    { 
+      sels : {
+        thumbsBarId: "#thumbs-bar",
+        thumbsHolderId    : "#thumb-holder",
+        thumbContainerClass  : "thumb",
+        slideThumbClass : "thumb-step",
+        dragBarId: "#thumbs-bar #dragbar",
+      }
+    }, jQuery);
+
 
 
     $(document).on('thumbmanager:thumb-clicked', function(event){
@@ -296,14 +314,19 @@ var builder = (function () {
       }
 
       //update thumbs
-      //taskManager.deleteThumb(slideRefId);
+      thumbsManager.deleteThumb(slideRefId);
     });
 
     $('.button.save').on('click', function () { asqEditor.save(); });
     $('.button.overview').on('click', function () { config['goto']('overview'); });
     $('.button.back').on('click', gotoPresentation);
-    $('.button.add').on('click', addSlide);
+    // $('.button.add').on('click', addSlide);
    
+    $('.button.add').on('click', function() {
+      var x = addSlide();
+      thumbsManager.createThumb(x);
+    });
+
 
     // var links = "<ul>";
     // [].forEach.call(document.querySelectorAll(".step"), function( el, idx ){
@@ -540,6 +563,8 @@ var builder = (function () {
     config.makeEditable(id);
     config['goto']($step[0]);
 
+    console.log($step[0])
+    return $($step[0]);
   }
 
   function showControls($where) {
