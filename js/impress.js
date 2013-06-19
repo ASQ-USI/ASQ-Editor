@@ -439,17 +439,10 @@
     }
 
     //function to delete a step, by number, id or dom
+    // it deletes from the steps array NOT from the DOM
     var deleteStep = function(callback){
-      var fhalf,shalf,i;
-      //console.log(getStep(callback));
-      for (i in steps){
-        if(getStep(callback)==steps[i]){
-          fhalf=steps.slice(0,i)
-          shalf=steps.slice(i*1+1,steps.length);
-          steps=fhalf.concat(shalf);
-          
-        }
-      }
+      var theStep = getStep(callback);
+      steps.splice(steps.indexOf(theStep),1)
     }
 
     // `goto` API function that moves to step given with `el` parameter (by index, id or element),
@@ -917,7 +910,8 @@
       newStep: newStep,
       setTransformationCallback: setTransformationCallback,
       deleteStep:deleteStep,
-      showMenu: showMenu
+      showMenu: showMenu,
+      steps: function(){return steps;}
     });
 
   };

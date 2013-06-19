@@ -1,3 +1,4 @@
+
 var builder = (function () {
 
   'use strict';
@@ -139,6 +140,17 @@ var builder = (function () {
     state.data.rotateY += v.x * config.rotateStep % 360;  // added % 360
   };//new
 
+  var ArrayMove = function (arr, old_index, new_index) {
+    if (new_index >= arr.length) {
+        var k = new_index - arr.length;
+        while ((k--) + 1) {
+            arr.push(undefined);
+        }
+    }
+    arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
+    return arr; // for testing purposes
+  };
+
   var layoutRendered = function(err,out){
     $('body').append(out);
 
@@ -194,7 +206,9 @@ var builder = (function () {
     // when rendered the thumb and layout managers are instantiated
     dust.render('layout', {}, layoutRendered);
 
-    
+    $(document).on("blur focus focusout", '.step', function(event){
+      thumbManager.updateThumb($(this).attr('id'))
+    })
 
 
     $(document).on('thumbmanager:thumb-clicked', function(event){
@@ -215,13 +229,20 @@ var builder = (function () {
       , newIndex    = detail.newIndex;
 
 
+      var oldIndex = $("#"+slideRefId).index()
+      console.log("oldIndex: " + oldIndex);
+      console.log("newIndex: " + newIndex)
+
       //ignore overview slide
       if(newIndex>0){
-        $("#"+slideRefId).insertAfter($(".step:not(#overview)").eq(newIndex-1))
+        $("#"+slideRefId).insertAfter($(".step").eq(newIndex-1))
       }else{
-        $("#"+slideRefId).insertBefore($(".step:not(#overview)").eq(0))
+        $("#"+slideRefId).insertBefore($(".step").eq(0))
       }
 
+      //CAUTION: this changes the internal steps of impress.js
+      //we do this so that the users can view the correct order of steps
+      ArrayMove(impress().steps(), oldIndex, newIndex)
     });
 
     $(document).on('thumbmanager:thumb-delete', function(event){
@@ -286,7 +307,7 @@ var builder = (function () {
     });
 
 
-    $('body').on('mouseenter', '.step', function (e) {
+    $('body').on('mouseenter', '.step:not(#overview)', function (e) {
       var shift = (e.shiftKey == 1);
      // if ($(this).attr('id') !== 'overview') 
       var $t = $(this);
@@ -308,7 +329,7 @@ var builder = (function () {
         }
       }, 100);
       $t.data('showTimer', showTimer);
-    }).on('mouseleave', '.step', function () {
+    }).on('mouseleave', '.step:not(#overview)', function () {
       //not showing when not staying
       clearTimeout($(this).data('showTimer'));
     });
@@ -316,10 +337,10 @@ var builder = (function () {
 
     // keep hover effect when leaving from a step
     // the user can see which element is selected
-    $('body').on('mouseenter', '.step', function(e) {
+    $('body').on('mouseenter', '.step:not(#overview)', function(e) {
       $('#impress').find('.hover').removeClass('hover');
       $(this).addClass('hover')
-    }).on('mouseleave', '.step', function(){
+    }).on('mouseleave', '.step:not(#overview)', function(){
       $(this).addClass('hover')
     });
 

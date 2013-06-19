@@ -11,6 +11,14 @@ body.edit .step.selected{
 }
 
 /**********************************************
+            Impress
+***********************************************/
+
+/*disable overview pointer for editor*/
+body.impress-on-overview #overview.step {
+  cursor: default;
+}
+/**********************************************
             Menu
 ***********************************************/
 .menu-item {font-size:0.7em}
@@ -652,6 +660,9 @@ a.back-button:hover {
   height: -webkit-calc(100% - 100px);
   height: calc(100% - 100px);
   text-align: center;
+  list-style: none;
+  margin:0px;
+  padding:0px;
 }
 
 #thumbs-bar #dragbar{
@@ -662,11 +673,24 @@ a.back-button:hover {
   cursor: col-resize;
 }
 
+#thumbs-bar .thumb-li{
+  padding:0px;
+  margin : 14px 24px 14px 18px;
+  text-align: left;
+}
+
+#thumbs-bar .thumb-li p{
+  color: white;
+  font-weight: 500;
+  margin:0;
+  padding:0;
+  font-style: italic;
+}
+
 #thumbs-bar .thumb{
   background : white;
   position: relative;
   border : 4px solid white;
-  margin : 14px 24px 14px 18px;
   padding : 10px;
 }
 

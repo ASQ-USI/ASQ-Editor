@@ -52,12 +52,8 @@ window.asqEditor = (function () {
     myNicEditor.setPanel('myNicPanel');
 
     //make each step editable
-    $('.step').each(function(){
+    $('.step:not(#overview)').each(function(){
       myNicEditor.addInstance(this.id);
-      var instance = myNicEditor.instanceById(this.id);
-      myNicEditor.addEvent('focus', function(event) {
-        console.log( arguments );
-      });
     });
   });
 

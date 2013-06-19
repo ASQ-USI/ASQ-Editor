@@ -94,7 +94,7 @@
   <div class="divider"></div>
 
   
-  <div id="thumb-holder"></div>
+  <ul id="thumb-holder"></ul>
 
 
 </div>

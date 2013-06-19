@@ -10,6 +10,7 @@ var ThumbManager = function (options, $){
   , this.sels = {
     thumbsBarId: "#thumbs-bar",
     thumbsHolderId    : "#thumb-holder",
+    thumbListClass    : "thumb-li",
     thumbContainerClass  : "thumb",
     slideThumbClass : "thumb-step",
     dragBarId: "#thumbs-bar #dragbar",
@@ -83,14 +84,18 @@ var ThumbManager = function (options, $){
     
     // add thumbs:
 
-    //choose all elements except from overview
-    var $steps = $('.step:not(#overview)');
-    $steps.each(function(){
-     that.$thumbs = that.$thumbs.add(that.createThumb($(this)))
+    //choose all elements 
+    var $steps = $('.step');
+    var thumbs = [];
+    $steps.each(function(index){
+     thumbs.push(that.createThumb($(this)))
     })
 
     //add to thumbsbar
-    that.$thumbs.each(that.injectThumb.bind(that));
+    $.each(thumbs, that.injectThumb.bind(that));
+
+    //cache jquery objects
+    that.$thumbs = $("."+ this.sels.slideThumbClass);
     that.resizeThumbs();
 
     $(sels.thumbsHolderId).sortable({
@@ -123,14 +128,14 @@ var ThumbManager = function (options, $){
 
     $(sels.thumbsBarId + ' ' + sels.thumbsHolderId).append($thumb)
     $thumb
+      .wrap('<li class="'+ sels.thumbListClass +'"></li>')
       .wrap('<div class="'+ sels.thumbContainerClass +'"></div>')
-
-    thumb.style["-webkit-transform-origin"] = "0 0";
-    thumb.style["-moz-transform-origin"] = "0 0";
-     $thumb.parent()
-      .css("background", $('body').css('background'))
-      // add the delete button to each thumb
-      .append('<a class="close" href="#">X</a>');
+      .parent()
+        .css("background", $('body').css('background'))
+        // add the delete button to each thumb
+        .prepend('<a class="close" href="#">X</a>')
+        .parent()
+          .prepend('<p>#'+ $thumb.attr('data-references') + '</p>')
   }
 
 
@@ -141,10 +146,11 @@ var ThumbManager = function (options, $){
   ThumbManager.prototype.updateThumb = function(stepId){
     var $newThumb = this.createThumb($('#' + stepId));
 
-    // update our thumbs array
-    this.$thumbs.filter('[data-references='+ stepId+']').replaceWith($newThumb);
     //update in thumbs-bar
     $('.' + this.sels.slideThumbClass+'[data-references='+ stepId+']').replaceWith($newThumb);
+    //update $thumbs
+    this.$thumbs = $("."+ this.sels.slideThumbClass);
+    this.resizeThumbs();
   }
 
   /** @function deleteThumb
@@ -152,10 +158,20 @@ var ThumbManager = function (options, $){
   * specified stepId
   */
   ThumbManager.prototype.deleteThumb = function(stepId){
+  var that = this;
   $('.' + this.sels.slideThumbClass+'[data-references='+ stepId+']')
     .parent().fadeOut("slow", function() {
       $(this).remove();
+      //update $thumbs
+      that.$thumbs = $("."+ that.sels.slideThumbClass)
     });
+  }
+
+  /** @function unselectThumbs
+  *   @description: Unselects all thumbs
+  */
+  ThumbManager.prototype.unselectThumbs = function(){
+    $('.' + this.sels.thumbContainerClass).removeClass('active')
   }
 
   /** @function selectThumb
@@ -186,7 +202,7 @@ var ThumbManager = function (options, $){
     // calculate padding margin and border width for left and right for each thumbContainer
     var $thumbContainer = $(this.sels.thumbsBarId + ' .' + this.sels.thumbContainerClass).eq(0);
     var outerWidth =  parseInt($thumbContainer.css("padding-left").replace("px", "")) + parseInt($thumbContainer.css("padding-right").replace("px", ""));
-    outerWidth +=  parseInt($thumbContainer.css("margin-left").replace("px", "")) + parseInt($thumbContainer.css("margin-right").replace("px", ""))
+    outerWidth +=  parseInt($thumbContainer.parent().css("margin-left").replace("px", "")) + parseInt($thumbContainer.parent().css("margin-right").replace("px", ""))
     outerWidth +=  parseInt($thumbContainer.css("border-left-width").replace("px", "")) + parseInt($thumbContainer.css("border-right-width").replace("px", ""));
     var thumbContentWidth = $(this.sels.thumbsBarId).innerWidth() - outerWidth;
 
@@ -208,11 +224,12 @@ var ThumbManager = function (options, $){
   /** @function createThumb
   *   @description: creates a clone of the original element,
   *   appends '-thumb' to the original id and removes any
-  *   classes for the cloned element and its children
-  *   it also add a data-references attribute to the referenced
-  *   step
+  *   classes for the cloned element and its children.
+  *   iIt also adds a data-references attribute to the referenced
+  *   step and sets the transform-origin css property.
   */
   ThumbManager.prototype.createThumb = function($orig){
+
     var that = this
     , $clone = $orig.clone()
     , cloneId = $clone.attr("id");
@@ -225,6 +242,9 @@ var ThumbManager = function (options, $){
       .css(that.css($orig))
       //add reference to original slide
       .attr('data-references', $orig.attr('id'))
+    
+    //set transform orign property
+    $clone[0].style["-webkit-transform-origin"] = "0 0";
 
     var $cloneChildren = $clone.find('*');
     //copy original computed style for children
