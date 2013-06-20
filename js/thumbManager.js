@@ -160,7 +160,7 @@ var ThumbManager = function (options, $){
   ThumbManager.prototype.deleteThumb = function(stepId){
   var that = this;
   $('.' + this.sels.slideThumbClass+'[data-references='+ stepId+']')
-    .parent().fadeOut("slow", function() {
+    .parents('li').fadeOut("slow", function() {
       $(this).remove();
       //update $thumbs
       that.$thumbs = $("."+ that.sels.slideThumbClass)

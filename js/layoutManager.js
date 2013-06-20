@@ -461,32 +461,66 @@ function LayoutManager (options, $){
       return;
     }
 
+    // Circle
+
+    // var offSetX = 2000
+    //   , offSetY = 1000
+    //   , angle = 0
+    //   , radius = typeof opt !== 'undefined' ? opt : 1500
+    //   , step = (2 * Math.PI) / this.selection.length;
+
+    // var that = this;
+
+    // $.each(this.selection, function(index, obj){
+
+    //   obj.data.x = offSetX + Math.round(radius * Math.cos(angle));
+    //   obj.data.y = offSetY + Math.round(radius * Math.sin(angle));
+
+    //   obj.$node[0].dataset.x = obj.data.x;
+    //   obj.$node[0].dataset.y = obj.data.y;
+
+    //   angle += step;
+
+    //   that.redrawFunction(obj.$node[0]);
+    // });
+
+    // Carousel || Coverflow
+
     var offSetX = 2000
-      , offSetY = 1000
+      , offSetZ = 1000
       , angle = 0
       , radius = typeof opt !== 'undefined' ? opt : 1500
-      , step = (2 * Math.PI) / this.selection.length;
+      , step = (2 * Math.PI) / this.selection.length
+      , rotation = 360 / this.selection.length
+      , offsetRotation = rotation;
+
+      console.log(rotation);
 
     var that = this;
 
     $.each(this.selection, function(index, obj){
 
       obj.data.x = offSetX + Math.round(radius * Math.cos(angle));
-      obj.data.y = offSetY + Math.round(radius * Math.sin(angle));
+      obj.data.y = 845;
+      obj.data.z = offSetZ + Math.round(radius * Math.sin(angle));
+      obj.data.rotateY = offsetRotation;
 
       obj.$node[0].dataset.x = obj.data.x;
       obj.$node[0].dataset.y = obj.data.y;
+      obj.$node[0].dataset.z = obj.data.z;
+      obj.$node[0].dataset.rotateY = obj.data.rotateY;
+
 
       angle += step;
+      offsetRotation -= rotation;
 
       that.redrawFunction(obj.$node[0]);
     });
 
+
   }
+
   this.init();
+
 };
-
-
-
-
 
