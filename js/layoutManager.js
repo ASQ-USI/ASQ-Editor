@@ -451,55 +451,82 @@ function LayoutManager (options, $){
   }
 
   LayoutManager.prototype.layoutInCircle = function (opt) {
-    
-    console.log("I will align in grid this selection")
-    console.log(this.selection)
 
-
-    if (this.selection.length<2) {
-      console.log("Need two or more selected objects");
+    if (this.selection.length < 3) {
+      console.log("Need three or more selected objects");
       return;
     }
 
-    // Circle
-
-    // var offSetX = 2000
-    //   , offSetY = 1000
-    //   , angle = 0
-    //   , radius = typeof opt !== 'undefined' ? opt : 1500
-    //   , step = (2 * Math.PI) / this.selection.length;
-
-    // var that = this;
-
-    // $.each(this.selection, function(index, obj){
-
-    //   obj.data.x = offSetX + Math.round(radius * Math.cos(angle));
-    //   obj.data.y = offSetY + Math.round(radius * Math.sin(angle));
-
-    //   obj.$node[0].dataset.x = obj.data.x;
-    //   obj.$node[0].dataset.y = obj.data.y;
-
-    //   angle += step;
-
-    //   that.redrawFunction(obj.$node[0]);
-    // });
-
-    // Carousel || Coverflow
-
     var offSetX = this.selection[0].data.x ? this.selection[0].data.x : 0
-      , offSetZ = this.selection[0].data.z ? this.selection[0].data.z : 0
-      , offSetY = this.selection[0].data.y ? this.selection[0].data.y : 0
-      , pi = Math.PI
-      , angle = 5*pi/2
-      , items = this.selection.length
-      , radius = Math.round( 512 / Math.tan(pi / items ) )// typeof opt !== 'undefined' ? opt : 1500
-      , step = (2 * pi) / items
-      , rotation = 360 / items
-      , offsetRotation = 0
-      , Xc = offSetX - (radius * Math.cos(pi/2))
-      , Zc = offSetZ - (radius * Math.sin(pi/2));
+    , offSetZ = this.selection[0].data.z ? this.selection[0].data.z : 0
+    , offSetY = this.selection[0].data.y ? this.selection[0].data.y : 0
+    , angle = 0
+    , radius = typeof opt !== 'undefined' ? opt : 1500
+    , step = (2 * Math.PI) / this.selection.length;
 
     var that = this;
+
+    $.each(this.selection, function(index, obj){
+
+      obj.data.x = offSetX + Math.round(radius * Math.cos(angle));
+      obj.data.y = offSetY + Math.round(radius * Math.sin(angle));
+      obj.data.z = offSetZ;
+
+      obj.$node[0].dataset.x = obj.data.x;
+      obj.$node[0].dataset.y = obj.data.y;
+      obj.$node[0].dataset.z = obj.data.z;
+
+
+      angle += step;
+
+      that.redrawFunction(obj.$node[0]);
+    });
+
+  }
+
+  LayoutManager.prototype.layoutInCircle3D = function (opt, mode) {
+
+    mode = "carousel"
+
+    if (this.selection.length < 3) {
+      console.log("Need three or more selected objects");
+      return;
+    }
+
+    var offSetX = this.selection[0].data.x ? this.selection[0].data.x : 0
+    , offSetZ = this.selection[0].data.z ? this.selection[0].data.z : 0
+    , offSetY = this.selection[0].data.y ? this.selection[0].data.y : 0
+    , pi = Math.PI
+    , items = this.selection.length
+    , radius = Math.round( 512 / Math.tan(pi / items ) )// typeof opt !== 'undefined' ? opt : 1500
+    , angle, step, rotStep, offsetRotation, firstSlideAngle
+
+
+    switch (mode){
+      case "carousel":
+        angle           = 5*pi/2;
+        step            = (-(2 * pi) / items);
+        rotStep         = 360 / items;
+        offsetRotation  = 0;
+        firstSlideAngle = pi/2;
+        break;
+
+      case "concave":
+         angle           = 3*pi/2;
+         step            = (2 * pi) / items;
+         rotStep         = - (360 / items);
+         offsetRotation  = 360;
+         firstSlideAngle = 3*pi/2;
+        break;
+
+      default:
+        console.log("LayoutManager: Error in layoutInCircle: unknown mode " + mode);
+        return;
+    }
+
+    var Xc = offSetX - (radius * Math.cos(firstSlideAngle))
+    , Zc = offSetZ - (radius * Math.sin(firstSlideAngle))
+    , that = this;
 
     $.each(this.selection, function(index, obj){
 
@@ -513,8 +540,8 @@ function LayoutManager (options, $){
       obj.$node[0].dataset.z = obj.data.z;
       obj.$node[0].dataset.rotateY = obj.data.rotateY;
 
-      angle = (angle - step)% (2 * pi);
-      offsetRotation += rotation;
+      angle = (angle + step)% (2 * pi);
+      offsetRotation += rotStep;
 
       that.redrawFunction(obj.$node[0]);
     });
