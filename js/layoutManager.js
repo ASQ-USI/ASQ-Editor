@@ -486,23 +486,26 @@ function LayoutManager (options, $){
 
     // Carousel || Coverflow
 
-    var offSetX = 2000
-      , offSetZ = 1000
-      , angle = 0
-      , radius = typeof opt !== 'undefined' ? opt : 1500
-      , step = (2 * Math.PI) / this.selection.length
-      , rotation = 360 / this.selection.length
-      , offsetRotation = rotation;
-
-      console.log(rotation);
+    var offSetX = this.selection[0].data.x ? this.selection[0].data.x : 0
+      , offSetZ = this.selection[0].data.z ? this.selection[0].data.z : 0
+      , offSetY = this.selection[0].data.y ? this.selection[0].data.y : 0
+      , pi = Math.PI
+      , angle = 5*pi/2
+      , items = this.selection.length
+      , radius = Math.round( 512 / Math.tan(pi / items ) )// typeof opt !== 'undefined' ? opt : 1500
+      , step = (2 * pi) / items
+      , rotation = 360 / items
+      , offsetRotation = 0
+      , Xc = offSetX - (radius * Math.cos(pi/2))
+      , Zc = offSetZ - (radius * Math.sin(pi/2));
 
     var that = this;
 
     $.each(this.selection, function(index, obj){
 
-      obj.data.x = offSetX + Math.round(radius * Math.cos(angle));
-      obj.data.y = 845;
-      obj.data.z = offSetZ + Math.round(radius * Math.sin(angle));
+      obj.data.x = Xc + Math.round(radius * Math.cos(angle));
+      obj.data.y = offSetY;
+      obj.data.z = Zc + Math.round(radius * Math.sin(angle));
       obj.data.rotateY = offsetRotation;
 
       obj.$node[0].dataset.x = obj.data.x;
@@ -510,9 +513,8 @@ function LayoutManager (options, $){
       obj.$node[0].dataset.z = obj.data.z;
       obj.$node[0].dataset.rotateY = obj.data.rotateY;
 
-
-      angle += step;
-      offsetRotation -= rotation;
+      angle = (angle - step)% (2 * pi);
+      offsetRotation += rotation;
 
       that.redrawFunction(obj.$node[0]);
     });
