@@ -752,14 +752,6 @@ $(function () {
 
   $(document).mousewheel(function(event, delta, deltaX, deltaY) {
 
-    // hack similar in the impress.js to deactivate all handlres when editing a step
-    // TODO: not so efficient because of the parentNode
-    var target = event.target;
-
-    if (target.classList.contains('nicEdit-selected') || target.parentNode.classList.contains('nicEdit-selected')) {
-      return;
-    }
-
     var transform = getTrans3D();
     transform.translate3d[2] = transform.translate3d[2] + deltaY * 10;
 
@@ -834,14 +826,6 @@ $(function () {
   // copied from https://github.com/clairezed/ImpressEdit
   $(document).mousedown(function(event) {
 
-    // hack similar in the impress.js to deactivate all handlres when editing a step
-    // TODO: not so efficient because of the parentNode
-    var target = event.target;
-
-    if (target.classList.contains('nicEdit-selected') || target.parentNode.classList.contains('nicEdit-selected')) {
-      return;
-    }
-
     $("#impress").data('event', {
         pos: {
             x: event.pageX,
@@ -852,6 +836,17 @@ $(function () {
     // hold the left click to move the viewport
     if (event.which === 1) {
       $(this).on('mousemove.moveView', function(event) {
+
+        // disable selection when moving the viewport
+        var styles = {
+          "-webkit-touch-callout" : "none",
+          "-webkit-user-select" : "none",
+          "-khtml-user-select" : "none",
+          "-moz-user-select" : "none",
+          "-ms-user-select" : "none",
+          "user-select" : "none"
+        }
+
         var transform = getTrans3D();
         var obj = angle(transform, event);
 
@@ -867,6 +862,8 @@ $(function () {
           transform: rotate(transform, true) + translate(transform),
           transition: "all 0 ease 0" 
         })
+
+        $('body').css(styles);
 
       });
 
@@ -901,6 +898,25 @@ $(function () {
       $('body').css('cursor', 'default');
       $(this).off(".moveView");
       $(this).off(".rotateView");
+    });
+
+
+    // prevent the handlers of viewport on steps
+    $(this).on('mousedown mousewheel', '.step', function(event) {
+      event.stopPropagation(); 
+      // revert back to selection on the step
+      
+      var styles = {
+        "-webkit-touch-callout" : "",
+        "-webkit-user-select" : "",
+        "-khtml-user-select" : "",
+        "-moz-user-select" : "",
+        "-ms-user-select" : "",
+        "user-select" : ""
+      }
+      
+      $('body').css(styles);
+    
     });
    
 
