@@ -482,7 +482,6 @@ a.back-button:hover {
 /* icons */
 .icon-holder{
    position:relative;
-   float:left;
    margin-left: 10px;
 }
 
@@ -516,6 +515,10 @@ a.back-button:hover {
   display:block;
   width:100%;
   height: 100%;
+}
+
+.alignment-icons, .offset-icons{
+  float:left;
 }
 
 .alignment-row  a{
@@ -585,14 +588,25 @@ a.back-button:hover {
   background: url("../img/EvenColumn.png") center no-repeat;
 }
 
-/******************** LAYOUTS ***********************/
+/**********************************************
+            Layouts
+***********************************************/
 
 .custom-layouts {
   width: 100%;
   height: 100px;
   margin-top: 10px;
-  padding: 0 10px;
   padding-bottom: 10px;
+  text-align: center;
+}
+
+.layout-ui-holder{
+  display: inline-block;
+}
+
+.grid-holder, .circle-holder{
+  width:25px;
+  height:25px;
 }
 
 .grid-holder a {
@@ -603,31 +617,28 @@ a.back-button:hover {
   background: url("../img/SnapToCircle.png") center no-repeat;
 }
 
-.grid input {
+.custom-layouts input {
   width: 35px;
-  margin-bottom: 4px;
-  margin-top: 5px;
-}
-
-.circle input {
-  width: 35px;
-  margin-bottom: 4px;
-  margin-top: 5px;
+  margin-left: 10px;
 }
 
 .custom-layouts .icon-holder {
-  margin-left: 50px;
+  display:inline-block;
+  height:25px;
+  width:25px;
+  position:relative;
+  top: 6px;
 }
 
-.grid {
-  margin-left: 30%;
-  margin-bottom: 10px;
+.grid , .circle {
+  text-align: left;
+  /*margin-bottom: 1px;*/
 }
 
-.circle {
-  margin-left: 30%;
-  margin-bottom: 10px;
+select#circle-select{
+  margin-left: 10px;
 }
+
 
 /**********************************************
             Thumbs-bar

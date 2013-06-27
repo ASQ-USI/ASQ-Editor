@@ -375,6 +375,9 @@ var builder = (function () {
               initialValue = 0;
 
           function mouseDown() {
+              if(!state.$node && selection.length<1){
+                return;
+              }
               distance = 0;
 
               // check for integer numbers
@@ -393,7 +396,9 @@ var builder = (function () {
           }
 
           function mouseMove(e) {
-
+              if(!state.$node && selection.length<1){
+                return;
+              }
               var currentValue;
               if ($el.val() % 1 === 0) {
                 currentValue = parseInt($el.val(), 10);
@@ -422,13 +427,33 @@ var builder = (function () {
                   $el.focus();
               }
           }
+         
+          function keyEnter(e) {
+            if(e.keyCode == 13){
+              updateSync($(e.target));
+            }
+          }
 
+          $el.on("keyup", keyEnter);
+          $el.on('focus', function(){
+            $(this).off('mousedown');
+          })
+          $el.on('blur', function(e){
+            updateSync($(e.target));
+            $(this).on('mousedown', mouseDown);
+          })
           $el.on('mousedown', mouseDown);
       });
   };
 
 
   function updateSync($el) {
+    var parsedVal = $el.val();
+    if(!parsedVal.match(/^\d+$/)){
+     alert("Only numbers allowed")
+      $el.focus();
+      return;
+    }
 
     if($el.attr('id') == 'mx') {
 
@@ -906,7 +931,7 @@ $(function () {
 
 
     // prevent the handlers of viewport on steps
-    $(this).on('mousedown mousewheel', '.step', function(event) {
+    $(this).on('mousedown mousewheel', '#impress .step', function(event) {
       event.stopPropagation(); 
       // revert back to selection on the step
       
