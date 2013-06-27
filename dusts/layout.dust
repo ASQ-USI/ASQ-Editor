@@ -47,21 +47,34 @@
 
   <div class="custom-layouts">
     <div class="title">Layouts</div>
-    
-    <div class="grid">
-      <div class="icon-holder">
-        <div class="grid-holder" title="Position slides to grid"><div class="gradient-holder"><a href=""></a></div></div>
-      </div>
-      <input value="3" id="grid-value" title="Number of slides per row"/>
-    </div>
 
-    <div class="circle">
-      <div class="icon-holder">
-        <div class="circle-holder" title="Position slides to circle"><div class="gradient-holder"><a href=""></a></div></div>
+    <span class="layout-ui-holder">
+      <div class="grid">
+        <input value="3" id="grid-value" title="Number of slides per row"/>
+        <div class="icon-holder">
+          <div class="grid-holder" title="Position slides to grid"><div class="gradient-holder"><a href=""></a></div></div>
+        </div>
       </div>
-      <input value="1500" id="circle-value" title="Size of circle's radius"/>
-    </div>
+
+      <div class="circle">
+        <input value="1500" id="circle-value" title="Size of circle's radius"/>
+        <div class="icon-holder">
+          <div class="circle-holder" title="Position slides to circle"><div class="gradient-holder"><a href=""></a></div></div>
+        </div>
+        <select id="circle-select">
+          <option value="circle">Circle</option>
+          <option selected value="carousel">Carousel</option>
+          <option value="concave">Concave</option>
+        </select>
+    
+      </div>
+    </span>
+    
+
   </div>
+
+
+
   <div class="divider"></div>
 
   <div id="sliders">

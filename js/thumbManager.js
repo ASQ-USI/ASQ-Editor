@@ -232,7 +232,16 @@ var ThumbManager = function (options, $){
 
     var that = this
     , $clone = $orig.clone()
-    , cloneId = $clone.attr("id");
+    , cloneId = $clone.attr("id")
+
+    , styles = {
+        "-webkit-touch-callout" : "",
+        "-webkit-user-select" : "",
+        "-khtml-user-select" : "",
+        "-moz-user-select" : "",
+        "-ms-user-select" : "",
+        "user-select" : ""
+    };
 
     $clone
       //change id only if not empty
@@ -240,6 +249,7 @@ var ThumbManager = function (options, $){
       .attr("class",that.sels.slideThumbClass)
       //copy original computed style
       .css(that.css($orig))
+      .css(styles)
       //add reference to original slide
       .attr('data-references', $orig.attr('id'))
     
@@ -254,7 +264,8 @@ var ThumbManager = function (options, $){
         .removeAttr("id")
         .removeAttr("class")
         //copy original computed style
-        .css(that.css($(this)));
+        .css(that.css($(this)))
+        .css(styles);
     });
 
     return $clone

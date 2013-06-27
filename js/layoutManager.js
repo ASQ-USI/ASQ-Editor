@@ -152,7 +152,15 @@ function LayoutManager (options, $){
     })
     .on('click', '.circle-holder', function(event) {
       event.preventDefault();
-      that.layoutInCircle();
+      
+      var mode = $('#circle-select option:selected').val();
+      
+      if (mode == "circle") {
+        that.layoutInCircle();
+      } else {
+        that.layoutInCircle3D(mode);
+      }
+
     });
   }
 
@@ -484,9 +492,9 @@ function LayoutManager (options, $){
 
   }
 
-  LayoutManager.prototype.layoutInCircle3D = function (opt, mode) {
+  LayoutManager.prototype.layoutInCircle3D = function (mode) {
 
-    mode = "carousel"
+   // mode = "carousel"
 
     if (this.selection.length < 3) {
       console.log("Need three or more selected objects");
@@ -534,11 +542,15 @@ function LayoutManager (options, $){
       obj.data.y = offSetY;
       obj.data.z = Zc + Math.round(radius * Math.sin(angle));
       obj.data.rotateY = offsetRotation;
+      obj.data.rotateX = 0;
+      obj.data.rotateZ = 0;
 
       obj.$node[0].dataset.x = obj.data.x;
       obj.$node[0].dataset.y = obj.data.y;
       obj.$node[0].dataset.z = obj.data.z;
       obj.$node[0].dataset.rotateY = obj.data.rotateY;
+      obj.$node[0].dataset.rotateX = obj.data.rotateX;
+      obj.$node[0].dataset.rotateZ = obj.data.rotateZ;
 
       angle = (angle + step)% (2 * pi);
       offsetRotation += rotStep;
