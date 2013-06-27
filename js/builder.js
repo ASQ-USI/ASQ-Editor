@@ -1,3 +1,7 @@
+//save original Html
+window.$originalHtml = $('html').clone();
+console.log(window.$originalHtml.html())
+
 
 var builder = (function () {
 

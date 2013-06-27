@@ -152,7 +152,7 @@ function LayoutManager (options, $){
     })
     .on('click', '.circle-holder', function(event) {
       event.preventDefault();
-      that.layoutInCircle();
+      that.layoutInCircle3D("concave");
     });
   }
 
@@ -486,7 +486,7 @@ function LayoutManager (options, $){
 
   LayoutManager.prototype.layoutInCircle3D = function (opt, mode) {
 
-    mode = "carousel"
+    mode = "concave"
 
     if (this.selection.length < 3) {
       console.log("Need three or more selected objects");

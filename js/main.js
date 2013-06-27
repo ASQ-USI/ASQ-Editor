@@ -20,8 +20,13 @@ window.asqEditor = (function () {
         .removeAttr('contenteditable')
         .removeAttr('style');
 
-    var content = $clone.eq(0).html();  
-    var blob = new Blob([content], {type: "text/html;charset=utf-8"});
+    var content = $clone.eq(0).html();
+    var $saved = window.$originalHtml.clone();
+    $saved.wrap('<html />')
+    $saved = $saved.parents('html')
+    $saved.find('#impress').html(content);
+    // console.log($saved.html());  
+    var blob = new Blob([$saved.html()], {type: "text/html;charset=utf-8"});
     saveAs(blob, "presentation.html");   
 
  //   return ($clone.html());
