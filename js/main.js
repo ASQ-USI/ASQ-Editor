@@ -11,6 +11,7 @@ window.asqEditor = (function () {
 
   function save(){
 
+    //clean up impress styles
     var $clone = $('#impress').clone();
     $clone
       .removeAttr('style')
@@ -21,15 +22,16 @@ window.asqEditor = (function () {
         .removeAttr('style');
 
     var content = $clone.eq(0).html();
-    var $saved = window.$originalHtml.clone();
+
+    //get source html from iframe
+    var $saved = $('#asq-edit-original-source').contents().find('html').clone();
     $saved.wrap('<html />')
     $saved = $saved.parents('html')
     $saved.find('#impress').html(content);
-    // console.log($saved.html());  
+    console.log($saved.html());  
     var blob = new Blob([$saved.html()], {type: "text/html;charset=utf-8"});
     saveAs(blob, "presentation.html");   
 
- //   return ($clone.html());
   }
 
   document.addEventListener("keydown", function (event) {
