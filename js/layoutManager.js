@@ -479,10 +479,16 @@ function LayoutManager (options, $){
       obj.data.x = offSetX + Math.round(radius * Math.cos(angle));
       obj.data.y = offSetY + Math.round(radius * Math.sin(angle));
       obj.data.z = offSetZ;
+      obj.data.rotateY = 0;
+      obj.data.rotateX = 0;
+      obj.data.rotateZ = 0;
 
       obj.$node[0].dataset.x = obj.data.x;
       obj.$node[0].dataset.y = obj.data.y;
       obj.$node[0].dataset.z = obj.data.z;
+      obj.$node[0].dataset.rotateY = obj.data.rotateY;
+      obj.$node[0].dataset.rotateX = obj.data.rotateX;
+      obj.$node[0].dataset.rotateZ = obj.data.rotateZ;
 
 
       angle += step;
@@ -537,6 +543,8 @@ function LayoutManager (options, $){
     , that = this;
 
     $.each(this.selection, function(index, obj){
+
+      console.log(obj)
 
       obj.data.x = Xc + Math.round(radius * Math.cos(angle));
       obj.data.y = offSetY;

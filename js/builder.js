@@ -1,6 +1,6 @@
 //save original Html
 window.$originalHtml = $('html').clone();
-console.log(window.$originalHtml.html())
+//console.log(window.$originalHtml.html())
 
 
 var builder = (function () {
@@ -225,6 +225,39 @@ var builder = (function () {
       thumbManager.selectThumb(slideRefId);
     });
 
+    // select multiple thumbs
+    $(document).on('mouseenter', '.thumb',function(e){
+      var slideRefId = e.originalEvent.detail.slideRefId
+
+      thumbManager.multipleSelectThumb(slideRefId);
+
+      console.log('multiple1')
+      console.log($(this))
+
+      var shift = (e.shiftKey == 1);
+      var $t = $(this);
+      showTimer = setTimeout(function () {
+          //show controls
+          state.$node = $t;
+          loadData();
+          //showControls(state.$node);
+          // MULTIPLE SELECTION OF STEPS
+          if (shift) {
+            if (!selection.hasstate(state)) {
+              console.log('multiple1')
+              selection.pushstate(state);
+            }
+          } else {
+            selection.clear();
+          }
+
+      }, 100);
+      $t.data('showTimer', showTimer);
+    }).on('mouseleave', '.thumb', function () {
+      //not showing when not staying
+      clearTimeout($(this).data('showTimer'));
+    });
+
     $(document).on('thumbmanager:thumb-sorted', function(event){
 
       var detail    = event.originalEvent.detail
@@ -270,22 +303,13 @@ var builder = (function () {
 
     $('.button.save').on('click', function () { asqEditor.save(); });
     $('.button.overview').on('click', function () { config['goto']('overview'); });
-    $('.button.back').on('click', gotoPresentation);
+    //$('.button.back').on('click', gotoPresentation);
     // $('.button.add').on('click', addSlide);
    
     $('.button.add').on('click', function() {
       var x = addSlide();
       thumbManager.insertThumb(x.attr('id'));
     });
-
-
-    // var links = "<ul>";
-    // [].forEach.call(document.querySelectorAll(".step"), function( el, idx ){
-    //     links += "<li><a href='#" + el.id + "'>Step " + idx + "</a></li>";
-    // })
-    // links += "</ul>";
-
-    // $('<nav></nav>').html(links).appendTo(".timeline");
 
 
     // $("#my").attr("value",$(".active").attr("data-y") || 0);
@@ -430,7 +454,8 @@ var builder = (function () {
          
           function keyEnter(e) {
             if(e.keyCode == 13){
-              updateSync($(e.target));
+              // updateSync($(e.target));
+              updateSync($el)
             }
           }
 
@@ -439,6 +464,9 @@ var builder = (function () {
             $(this).off('mousedown');
           })
           $el.on('blur', function(e){
+            if(!state.$node && selection.length<1){
+                return;
+              }
             updateSync($(e.target));
             $(this).on('mousedown', mouseDown);
           })
@@ -449,9 +477,10 @@ var builder = (function () {
 
   function updateSync($el) {
     var parsedVal = $el.val();
-    if(!parsedVal.match(/^\d+$/)){
-     alert("Only numbers allowed")
-      $el.focus();
+    //if(!parsedVal.match(/^\d+$/)){
+    if(!parsedVal.match(/^[+-]?[\d,]+(\.\d{3})?$/)){
+      alert("Only numbers allowed")
+      //$el.focus();
       return;
     }
 
