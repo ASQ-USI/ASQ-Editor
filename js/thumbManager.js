@@ -98,23 +98,29 @@ var ThumbManager = function (options, $){
     that.$thumbs = $("."+ this.sels.slideThumbClass);
     that.resizeThumbs();
 
-    $(sels.thumbsHolderId).sortable({
-      stop: function(event, ui)
-      {
+    // make it sortable
+    // $(sels.thumbsHolderId).sortable({
+    //   stop: function(event, ui)
+    //     {
 
-        var $thumbStep  = $(ui.item).find('.' + sels.slideThumbClass)
-        , thumbId       = $thumbStep.attr('id')
-        , slideRefId    = $thumbStep.attr('data-references')
-        , newIndex      = $(ui.item).index();
+    //       var $thumbStep  = $(ui.item).find('.' + sels.slideThumbClass)
+    //       , thumbId       = $thumbStep.attr('id')
+    //       , slideRefId    = $thumbStep.attr('data-references')
+    //       , newIndex      = $(ui.item).index();
 
-        console.log($thumbStep)
+    //       console.log($thumbStep)
 
-        triggerEvent(document, "thumbmanager:thumb-sorted", {thumbId : thumbId, slideRefId : slideRefId, newIndex : newIndex}) 
-      }
-    },
-    {axis: 'y'}
-    )
-  
+    //       triggerEvent(document, "thumbmanager:thumb-sorted", {thumbId : thumbId, slideRefId : slideRefId, newIndex : newIndex}) 
+    //     }
+    //     },
+    //     {axis: 'y'}
+    //   );
+
+    // make it selectable
+    // $(sels.thumbsHolderId).selectable({ 
+    //   filter: "> .thumb-li" ,
+    //   cancel: ".thumb"
+    // });
   }
 
   /** @function injectThumb
