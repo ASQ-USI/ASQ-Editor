@@ -223,7 +223,6 @@ var builder = (function () {
       thumbManager.updateThumb($(this).attr('id'))
     })
 
-
     $(document).on('thumbmanager:thumb-clicked', function(event){
       var slideRefId = event.originalEvent.detail.slideRefId
 
@@ -232,39 +231,6 @@ var builder = (function () {
 
       //select thumb
       thumbManager.selectThumb(slideRefId);
-    });
-
-    // select multiple thumbs
-    $(document).on('mouseenter', '.thumb',function(e){
-      var slideRefId = e.originalEvent.detail.slideRefId
-
-      thumbManager.multipleSelectThumb(slideRefId);
-
-      console.log('multiple1')
-      console.log($(this))
-
-      var shift = (e.shiftKey == 1);
-      var $t = $(this);
-      showTimer = setTimeout(function () {
-          //show controls
-          state.$node = $t;
-          loadData();
-          //showControls(state.$node);
-          // MULTIPLE SELECTION OF STEPS
-          if (shift) {
-            if (!selection.hasstate(state)) {
-              console.log('multiple1')
-              selection.pushstate(state);
-            }
-          } else {
-            selection.clear();
-          }
-
-      }, 100);
-      $t.data('showTimer', showTimer);
-    }).on('mouseleave', '.thumb', function () {
-      //not showing when not staying
-      clearTimeout($(this).data('showTimer'));
     });
 
     $(document).on('thumbmanager:thumb-sorted', function(event){
@@ -381,6 +347,11 @@ var builder = (function () {
       $(this).addClass('hover')
     });
 
+    $('body').on('click', function(e) {
+      $('#impress').find('.hover').removeClass('hover');
+      $('.builder-controls').removeAttr('style');
+      //thumbManager.updateThumb($(this).attr('id'))
+    });
 
 
     $(window).on('beforeunload', function () {
@@ -582,7 +553,6 @@ var builder = (function () {
   }
 
   function showControls($where) {
-    
     var top, left, pos = $where.offset();
     //not going out the edges (at least one way)
     top = (pos.top > 0) ? pos.top + (100 / config.visualScaling) : 0;

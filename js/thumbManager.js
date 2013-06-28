@@ -167,13 +167,6 @@ var ThumbManager = function (options, $){
     });
   }
 
-  /** @function unselectThumbs
-  *   @description: Unselects all thumbs
-  */
-  ThumbManager.prototype.unselectThumbs = function(){
-    $('.' + this.sels.thumbContainerClass).removeClass('active')
-  }
-
   /** @function selectThumb
   *   @description: Highlight the thumb that corresponds to the
   * specified thumb id
