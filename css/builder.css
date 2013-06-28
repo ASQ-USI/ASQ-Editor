@@ -717,16 +717,6 @@ select#circle-select{
     cursor: move;
 }
 
-.thumbs-bar .primary button {
-  display: inline-block;
-  width: 79%;
-  height: 60px;
-  margin: 5;
-  text-align: center;
-  border: none;
-  cursor: pointer;
-}
-
 .button.back {
   background: rgb(65, 65, 65) url("../img/arrow_left.png") no-repeat center;
 }
@@ -736,7 +726,10 @@ select#circle-select{
 }
 
 .button.add {
+  width: 35px;
+  height: 35px;
   background: url("../img/plus.png") no-repeat center;
+  margin-top: 15px;
 }
 
 .button.add:hover {

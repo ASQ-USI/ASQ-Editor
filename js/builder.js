@@ -347,10 +347,16 @@ var builder = (function () {
       $(this).addClass('hover')
     });
 
-    $('body').on('click', function(e) {
-      $('#impress').find('.hover').removeClass('hover');
+    // fixed the style of thumb and remove the style of step when pressing on body
+    $('.step').on('mousedown', function(event) {
+      event.stopPropagation();
+      console.log('step');
+    });
+    $('body').on('mousedown', function(e) {
+      console.log('body');
+      $('#impress > div').find('.hover').removeClass('hover');
       $('.builder-controls').removeAttr('style');
-      //thumbManager.updateThumb($(this).attr('id'))
+      $('.thumb-step').css('background-color', "");
     });
 
 
