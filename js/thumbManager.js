@@ -182,6 +182,15 @@ var ThumbManager = function (options, $){
     $('.' + this.sels.thumbContainerClass).removeClass('active')
     $('.' + this.sels.slideThumbClass+'[data-references='+ stepId+']').parent().addClass('active');
   }
+ 
+ /** @function multipleSelectThumb
+  *   @description: Highlight the thumbs that correspond to the
+  * specified thumbs ids
+  */
+  ThumbManager.prototype.multipleSelectThumb = function(stepId){
+ //   $('.' + this.sels.thumbContainerClass).removeClass('active')
+    $('.' + this.sels.slideThumbClass+'[data-references='+ stepId+']').parent().addClass('multiple');
+  }  
 
   /** @function insertThumb
   *   @description: given a step id it creates the corresponding
