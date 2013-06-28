@@ -28,8 +28,10 @@ window.asqEditor = (function () {
     $saved.wrap('<html />')
     $saved = $saved.parents('html')
     $saved.find('#impress').html(content);
-    console.log($saved.html());  
-    var blob = new Blob([$saved.html()], {type: "text/html;charset=utf-8"});
+    console.log($saved.html()); 
+    // reenable scripts
+    var activeHtml =  $saved.html().replace(/<script type=\"text\/xml\" /g, '<script ');
+    var blob = new Blob([activeHtml], {type: "text/html;charset=utf-8"});
     saveAs(blob, "presentation.html");   
 
   }
