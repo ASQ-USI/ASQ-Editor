@@ -257,7 +257,7 @@ var builder = (function () {
 
 
       var oldIndex = $("#"+slideRefId).index()
-      
+
       //ignore overview slide
       if(newIndex>0){
         $("#"+slideRefId).insertAfter($(".step").eq(newIndex-1))
@@ -318,6 +318,7 @@ var builder = (function () {
       clearTimeout(showTimer);
     });
     $(document).on('mouseup', function () {
+      console.log("I should stop")
       mouse.activeFunction = false;
       $(document).off('mousemove.handler1');
     });
@@ -361,8 +362,19 @@ var builder = (function () {
     });
 
     // fixed the style of thumb and remove the style of step when pressing on body
-    $('#impress div.step').on('mousedown', function(event) {
+    $body.on('mousedown', '#impress div.step', function(event) {
       event.stopPropagation();
+
+      var styles = {
+        "-webkit-touch-callout" : "",
+        "-webkit-user-select" : "",
+        "-khtml-user-select" : "",
+        "-moz-user-select" : "",
+        "-ms-user-select" : "",
+        "user-select" : ""
+      };
+
+      $body.css(styles);
     });
     $body.on('mousedown', function(e) {
       // remove hover from steps and thumbs
@@ -414,7 +426,10 @@ var builder = (function () {
 
               updateSync($el);
 
-              $(document).on('mousemove', mouseMove).on('mouseup', mouseUp);
+              // namespaces events
+              $(document)
+                .on('mousemove.inputs', mouseMove)
+                .on('mouseup.inputs', mouseUp);
 
               return false;
           }
@@ -432,45 +447,72 @@ var builder = (function () {
               }
 
              // var currentValue = parseInt($el.val(), 10),
-               var event = e.originalEvent,
-                  movementX = event.movementX || event.webkitMovementX || event.mozMovementX || 0,
-                  movementY = event.movementY || event.webkitMovementY || event.mozMovementY || 0;              
+              var event = e.originalEvent,
+                movementX = event.movementX || event.webkitMovementX || event.mozMovementX || 0,
+                movementY = event.movementY || event.webkitMovementY || event.mozMovementY || 0;      
 
               distance += (movementX - movementY) * options.step;
 
               $el.val(Math.min(options.max, Math.max(initialValue + distance, options.min)));
 
               updateSync($el);
-
           }
 
           function mouseUp() {
-              $(document).off('mousemove mouseup');
+          
+              $(document).off('mousemove.inputs mouseup.inputs');
 
               if (Math.abs(distance) < options.tolerance) {
-                  $el.focus();
+                $el.focus();
               }
           }
          
           function keyEnter(e) {
             if(e.keyCode == 13){
-              // updateSync($(e.target));
-              updateSync($el)
+              updateSync($(e.target))
             }
           }
 
+          // accept only negative/positive/decimal numbers
+          // not characters
+          $el.change(function(){
+              var val = this.value, sign = '';
+              if(val.lastIndexOf('-', 0) === 0){
+                  sign = '-';
+                  val = val.substring(1);
+              }
+              var parts = val.split('.').slice(0,2);
+              if(parts[0] && parseInt(parts[0], 10).toString() !== parts[0]){
+                  parts[0] = parseInt(parts[0], 10);
+                  if(!parts[0])
+                      parts[0] = 0;
+              }
+              var result = parts[0];
+              if(parts.length > 1){
+                  result += '.';
+                  if(parts[1].length > 3 || 
+                    parseInt(parts[1], 10).toString() !== parts[1]){
+                        parts[1] = parseInt(parts[1].substring(0,3), 10);
+                        if(!parts[1])
+                            parts[1] = 0;
+                  }
+                  result += parts[1];
+              }
+              this.value = sign+result;
+          });
+
           $el.on("keyup", keyEnter);
           $el.on('focus', function(){
-            $(this).off('mousedown');
+            $(this).off('mousedown.inputs');
           })
           $el.on('blur', function(e){
             if(!state.$node && selection.length<1){
-                return;
-              }
+              return;
+            }
             updateSync($(e.target));
-            $(this).on('mousedown', mouseDown);
+            $(this).on('mousedown.inputs', mouseDown);
           })
-          $el.on('mousedown', mouseDown);
+          $el.on('mousedown.inputs', mouseDown);
       });
   };
 
@@ -568,7 +610,7 @@ var builder = (function () {
     config.makeEditable(id);
     config['goto']($step[0]);
 
-    console.log($step[0])
+    //console.log($step[0])
     return $($step[0]);
   }
 
@@ -886,15 +928,7 @@ $(function () {
   // copied from https://github.com/clairezed/ImpressEdit
   $(document).mousedown(function(event) {
 
-    var $body = $('body')
-    , styles = {
-          "-webkit-touch-callout" : "none",
-          "-webkit-user-select" : "none",
-          "-khtml-user-select" : "none",
-          "-moz-user-select" : "none",
-          "-ms-user-select" : "none",
-          "user-select" : "none"
-      };
+    var $body = $('body');
 
     $("#impress").data('event', {
         pos: {
@@ -908,8 +942,15 @@ $(function () {
       $(this).on('mousemove.moveView', function(event) {
 
         // disable selection when moving the viewport
+        var styles = {
+          "-webkit-touch-callout" : "none",
+          "-webkit-user-select" : "none",
+          "-khtml-user-select" : "none",
+          "-moz-user-select" : "none",
+          "-ms-user-select" : "none",
+          "user-select" : "none"
+        };
         
-
         var transform = getTrans3D();
         var obj = angle(transform, event);
 
@@ -965,10 +1006,9 @@ $(function () {
 
 
     // prevent the handlers of viewport on steps
-    $(this).on('mousedown mousewheel', '#impress .step', function(event) {
+    $(this).on('mousedown mousewheel', '#impress div.step', function(event) {
+      //console.log('user-select : ""')
       event.stopPropagation(); 
-      // revert back to selection on the step
-      $body.css(styles);
     
     });
    
