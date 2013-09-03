@@ -685,6 +685,7 @@ select#circle-select{
 }
 
 #thumbs-bar .thumb-li{
+  position:relative;
   padding:0px;
   margin : 14px 24px 14px 18px;
   text-align: left;
@@ -694,6 +695,22 @@ select#circle-select{
   -moz-user-select : none;
   -ms-user-select : none;
   user-select : none;}
+
+#thumbs-bar .thumb-li > .drag{
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgba(93, 233, 104, 0);
+  height: 100%;
+  width: 20%;
+  z-index: 2;
+  cursor: move;
+  display:none;
+}
+
+#thumbs-bar .thumb-li:hover > .drag{
+  display:block;
+}
 
 #thumbs-bar .thumb-li p{
   color: white;

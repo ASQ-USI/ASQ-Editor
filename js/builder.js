@@ -1,17 +1,3 @@
-$.ajax(document.URL).done(function(data){
-    //prevent scripts from executing when injected into dom
-    data = data.replace(/<script(?=(\s|>))/ig, '<script type="text/xml" ');
-
-    //create iframe to hold the oringal html
-    $('body').append( '<iframe style="height:0;width:0;" id="asq-edit-original-source"></iframe>');
-    
-    var $sourceIFrame =  $('#asq-edit-original-source')
-    , iframeDoc = $sourceIFrame[0].contentDocument || $sourceIFrame[0].contentWindow.document;
-
-    iframeDoc.write(data);
-  })
-
-
 var builder = (function () {
 
   'use strict';
@@ -189,6 +175,21 @@ var builder = (function () {
 
     config = $.extend(config, conf);
 
+
+    //save original document
+    $.ajax(document.URL).done(function(data){
+      //prevent scripts from executing when injected into dom
+      data = data.replace(/<script(?=(\s|>))/ig, '<script type="text/xml" ');
+
+      //create iframe to hold the oringal html
+      $('body').append( '<iframe style="height:0;width:0;" id="asq-edit-original-source"></iframe>');
+      
+      var $sourceIFrame =  $('#asq-edit-original-source')
+      , iframeDoc = $sourceIFrame[0].contentDocument || $sourceIFrame[0].contentWindow.document;
+
+      iframeDoc.write(data);
+    })
+
     if (config.setTransformationCallback) {
       config.setTransformationCallback(function (x) {
         // guess what, it indicates slide change too :)
@@ -231,6 +232,21 @@ var builder = (function () {
 
       //select thumb
       thumbManager.selectThumb(slideRefId);
+    });
+
+    $(document).on('thumbmanager:thumb-selection', function(event){
+      var slideRefIds = event.originalEvent.detail.slideRefIds
+      selection.clear();
+      _.each(slideRefIds, function(el, index){
+        state.$node = $("#"+el);
+        selection.pushstate(state)
+      })
+
+      //goto and make editable the current slide
+     // config['goto'](slideRefIds[]);
+
+      //select thumb
+     // thumbManager.selectThumb(slideRefId);
     });
 
     $(document).on('thumbmanager:thumb-sorted', function(event){
@@ -681,6 +697,7 @@ var builder = (function () {
     return false;
   }
 
+  // return editor API
   return {
     init: init
   };
