@@ -8,10 +8,10 @@ var builder = (function () {
     data: {
       x: 0,
       y: 0,
-      z: 0, //new
+      z: 0, 
       rotate: 0,
-      rotateX: 0, //new
-      rotateY: 0, //new
+      rotateX: 0, 
+      rotateY: 0, 
       scale: 0
     }
   },
@@ -27,8 +27,10 @@ var builder = (function () {
     defaults = {
       x: 0,
       y: 0,
-      z: 0, //new
+      z: 0, 
       rotate: 0,
+      rotateX: 0, 
+      rotateY: 0, 
       scale: 1
     },
     mouse = {
@@ -50,7 +52,7 @@ var builder = (function () {
         return true;
     }
     return false;
-  }
+  };
   selection.pushstate = function (s) {
     //make a deep enough copy
     this.push({
@@ -58,55 +60,68 @@ var builder = (function () {
       data: {
         x: s.data.x,
         y: s.data.y,
+        z: s.data.z,
         rotate: s.data.rotate,
+        rotateX: s.data.rotateX,
+        rotateY: s.data.rotateY,
         scale: s.data.scale
       }
     });
     s.$node[0].classList.add('selected');
-  }
+  };
   selection.move = function (x, y) {
     for (var i = 0; i < this.length; i++) {
       this[i].data.x = (this[i].data.x) ? (this[i].data.x) + x : x;
       this[i].data.y = (this[i].data.y) ? (this[i].data.y) + y : y;
     }
-  }
+  };
   selection.scale = function (x) {
-        console.log(this.length)
     for (var i = 0; i < this.length; i++) {
       this[i].data.scale -= -x * config.scaleStep * config.visualScaling / 10;
     }
-  }
+  };
   selection.setScale = function (s) {
     for (var i = 0; i < this.length; i++) {
       this[i].data.scale = s;
     }
-  }
+  };
   selection.rotate = function (x) {
     for (var i = 0; i < this.length; i++) {
       this[i].data.rotate -= -x * config.rotateStep % 360;
     }
-  }
+  };
   selection.setRotate = function (r) {
     for (var i = 0; i < this.length; i++) {
       this[i].data.rotate = r;
     }
-  }
+  };
   selection.setX = function (x) {
     for (var i = 0; i < this.length; i++) {
       this[i].data.x = x;
     }
-  }
+  };
   selection.setY = function (y) {
     for (var i = 0; i < this.length; i++) {
       this[i].data.y = y;
     }
-  }
+  };
+  selection.setZ = function (z) {
+    for (var i = 0; i < this.length; i++) {
+      this[i].data.z = z;
+    }
+  };
+  selection.rotate3D = function (x, y) {
+    for (var i = 0; i < this.length; i++) {
+      this[i].data.rotateX = (this[i].data.rotateX) ? (this[i].data.rotateX) + (-y * config.rotateStep % 360) : (-y * config.rotateStep % 360);
+      this[i].data.rotateY = (this[i].data.rotateY) ? (this[i].data.rotateY) + (x * config.rotateStep % 360) : (x * config.rotateStep % 360);
+    }
+  };
   selection.clear = function () {
     for (var i = 0; i < this.length; i++) {
       this[i].$node[0].classList.remove('selected');
     }
     this.length = 0;
-  }
+  };
 
   handlers.move = function (x, y) {
     var v = fixVector(x, y);
@@ -115,7 +130,6 @@ var builder = (function () {
     }
     state.data.x = (state.data.x) ? (state.data.x) + v.x : v.x;
     state.data.y = (state.data.y) ? (state.data.y) + v.y : v.y;
-
   };
   handlers.scale = function (x) {
     if (selection.length > 1) {
@@ -129,15 +143,15 @@ var builder = (function () {
     }
     state.data.rotate -= -x * config.rotateStep % 360;
   };
-
-  //new
-  handlers.rotateX=function(x,y){
+  
+  handlers.rotate3D = function (x, y) {
     var v = fixVector(x, y);
-
-    // selection.length ???
-    state.data.rotateX += -v.y * config.rotateStep % 360; // added % 360
-    state.data.rotateY += v.x * config.rotateStep % 360;  // added % 360
-  };//new
+    if (selection.length > 1) {
+      selection.rotate3D(v.x, v.y);
+    }
+    state.data.rotateX = (state.data.rotateX) ? (state.data.rotateX) + (-v.y * config.rotateStep % 360) : (-v.y * config.rotateStep % 360);
+    state.data.rotateY = (state.data.rotateY) ? (state.data.rotateY) + (v.x * config.rotateStep % 360) : (v.x * config.rotateStep % 360);
+  };
 
   var ArrayMove = function (arr, old_index, new_index) {
     if (new_index >= arr.length) {
@@ -205,7 +219,8 @@ var builder = (function () {
       })
     }
 
-    $('body').addClass('edit');
+    var $body = $('body');
+    $body.addClass('edit');
     $overview = $('#overview');
 
     $controls = $('<div class="builder-controls"></div>').hide();
@@ -214,7 +229,7 @@ var builder = (function () {
     $('<div class="bt-move border"></div>').attr('title', 'Move').data('func', 'move').appendTo($controls);
     $('<div class="bt-rotate border"></div>').attr('title', 'Rotate').data('func', 'rotate').appendTo($controls);
     $('<div class="bt-scale border"></div>').attr('title', 'Scale').data('func', 'scale').appendTo($controls);
-    $('<div class="bt-rotateX"></div>').attr('title', 'RotateX').data('func', 'rotateX').appendTo($controls);
+    $('<div class="bt-rotateX"></div>').attr('title', 'RotateX').data('func', 'rotate3D').appendTo($controls);
 
     //render the layout HTML
     // when rendered the thumb and layout managers are instantiated
@@ -258,8 +273,6 @@ var builder = (function () {
 
 
       var oldIndex = $("#"+slideRefId).index()
-      console.log("oldIndex: " + oldIndex);
-      console.log("newIndex: " + newIndex)
 
       //ignore overview slide
       if(newIndex>0){
@@ -321,12 +334,13 @@ var builder = (function () {
       clearTimeout(showTimer);
     });
     $(document).on('mouseup', function () {
+      console.log("I should stop")
       mouse.activeFunction = false;
       $(document).off('mousemove.handler1');
     });
 
 
-    $('body').on('mouseenter', '.step:not(#overview)', function (e) {
+    $body.on('mouseenter', '.step:not(#overview)', function (e) {
       var shift = (e.shiftKey == 1);
      // if ($(this).attr('id') !== 'overview') 
       var $t = $(this);
@@ -356,17 +370,35 @@ var builder = (function () {
 
     // keep hover effect when leaving from a step
     // the user can see which element is selected
-    $('body').on('mouseenter', '.step:not(#overview)', function(e) {
+    $body.on('mouseenter', '.step:not(#overview)', function(e) {
       $('#impress').find('.hover').removeClass('hover');
       $(this).addClass('hover')
     }).on('mouseleave', '.step:not(#overview)', function(){
       $(this).addClass('hover')
     });
 
-    $('body').on('click', function(e) {
-      $('#impress').find('.hover').removeClass('hover');
-      $('.builder-controls').removeAttr('style');
-      //thumbManager.updateThumb($(this).attr('id'))
+    // fixed the style of thumb and remove the style of step when pressing on body
+    $body.on('mousedown', '#impress div.step', function(event) {
+      event.stopPropagation();
+
+      var styles = {
+        "-webkit-touch-callout" : "",
+        "-webkit-user-select" : "",
+        "-khtml-user-select" : "",
+        "-moz-user-select" : "",
+        "-ms-user-select" : "",
+        "user-select" : ""
+      };
+
+      $body.css(styles);
+    });
+    $body.on('mousedown', function(e) {
+      // remove hover from steps and thumbs
+      $('#impress > div').find('.hover').each(function(){
+        $(this).removeClass('hover');
+        thumbManager.updateThumb($(this).attr('id'));
+      });
+      $('.builder-controls').removeAttr('style');  
     });
 
 
@@ -410,7 +442,10 @@ var builder = (function () {
 
               updateSync($el);
 
-              $(document).on('mousemove', mouseMove).on('mouseup', mouseUp);
+              // namespaces events
+              $(document)
+                .on('mousemove.inputs', mouseMove)
+                .on('mouseup.inputs', mouseUp);
 
               return false;
           }
@@ -428,57 +463,84 @@ var builder = (function () {
               }
 
              // var currentValue = parseInt($el.val(), 10),
-               var event = e.originalEvent,
-                  movementX = event.movementX || event.webkitMovementX || event.mozMovementX || 0,
-                  movementY = event.movementY || event.webkitMovementY || event.mozMovementY || 0;              
+              var event = e.originalEvent,
+                movementX = event.movementX || event.webkitMovementX || event.mozMovementX || 0,
+                movementY = event.movementY || event.webkitMovementY || event.mozMovementY || 0;      
 
               distance += (movementX - movementY) * options.step;
 
               $el.val(Math.min(options.max, Math.max(initialValue + distance, options.min)));
 
               updateSync($el);
-
           }
 
           function mouseUp() {
-              $(document).off('mousemove mouseup');
+          
+              $(document).off('mousemove.inputs mouseup.inputs');
 
               if (Math.abs(distance) < options.tolerance) {
-                  $el.focus();
+                $el.focus();
               }
           }
          
           function keyEnter(e) {
             if(e.keyCode == 13){
-              // updateSync($(e.target));
-              updateSync($el)
+              updateSync($(e.target))
             }
           }
 
+          // accept only negative/positive/decimal numbers
+          // not characters
+          $el.change(function(){
+              var val = this.value, sign = '';
+              if(val.lastIndexOf('-', 0) === 0){
+                  sign = '-';
+                  val = val.substring(1);
+              }
+              var parts = val.split('.').slice(0,2);
+              if(parts[0] && parseInt(parts[0], 10).toString() !== parts[0]){
+                  parts[0] = parseInt(parts[0], 10);
+                  if(!parts[0])
+                      parts[0] = 0;
+              }
+              var result = parts[0];
+              if(parts.length > 1){
+                  result += '.';
+                  if(parts[1].length > 3 || 
+                    parseInt(parts[1], 10).toString() !== parts[1]){
+                        parts[1] = parseInt(parts[1].substring(0,3), 10);
+                        if(!parts[1])
+                            parts[1] = 0;
+                  }
+                  result += parts[1];
+              }
+              this.value = sign+result;
+          });
+
           $el.on("keyup", keyEnter);
           $el.on('focus', function(){
-            $(this).off('mousedown');
+            $(this).off('mousedown.inputs');
           })
           $el.on('blur', function(e){
             if(!state.$node && selection.length<1){
-                return;
-              }
+              return;
+            }
             updateSync($(e.target));
-            $(this).on('mousedown', mouseDown);
+            $(this).on('mousedown.inputs', mouseDown);
           })
-          $el.on('mousedown', mouseDown);
+          $el.on('mousedown.inputs', mouseDown);
       });
   };
 
 
   function updateSync($el) {
-    var parsedVal = $el.val();
-    //if(!parsedVal.match(/^\d+$/)){
-    if(!parsedVal.match(/^[+-]?[\d,]+(\.\d{3})?$/)){
-      alert("Only numbers allowed")
-      //$el.focus();
-      return;
-    }
+    // var parsedVal = $el.val();
+    // //if(!parsedVal.match(/^\d+$/)){
+    // if(!parsedVal.match(/^[+-]?[\d,]+(\.\d{3})?$/)){
+    //   alert("Only numbers allowed")
+    //   //$el.focus();
+    //   return;
+    // }
 
     if($el.attr('id') == 'mx') {
 
@@ -496,7 +558,7 @@ var builder = (function () {
     if ($el.attr('id') == 'mz') {
 
       state.data.z = $el.val();
-      // selection.setY(state.data.y); // TO DO
+      selection.setZ(state.data.z); 
       redraw();
     }
 
@@ -564,7 +626,7 @@ var builder = (function () {
     config.makeEditable(id);
     config['goto']($step[0]);
 
-    console.log($step[0])
+    //console.log($step[0])
     return $($step[0]);
   }
 
@@ -625,11 +687,11 @@ var builder = (function () {
     //add defaults
     state.data.x = parseFloat(state.$node[0].dataset.x) || defaults.x;
     state.data.y = parseFloat(state.$node[0].dataset.y) || defaults.y;
-    state.data.z=parseFloat(state.$node[0].dataset.z) || defaults.z; //new   
+    state.data.z = parseFloat(state.$node[0].dataset.z) || defaults.z;    
     state.data.scale = parseFloat(state.$node[0].dataset.scale) || defaults.scale;
     state.data.rotate = parseFloat(state.$node[0].dataset.rotate) || defaults.rotate;
-    state.data.rotateX=parseFloat(state.$node[0].dataset.rotateX) || defaults.rotate; //new
-    state.data.rotateY=parseFloat(state.$node[0].dataset.rotateY) || defaults.rotate; //new
+    state.data.rotateX = parseFloat(state.$node[0].dataset.rotateX) || defaults.rotateX; 
+    state.data.rotateY = parseFloat(state.$node[0].dataset.rotateY) || defaults.rotateY; 
   }
 
 
@@ -642,7 +704,10 @@ var builder = (function () {
         for (var i = 0; i < selection.length; i++) {
           selection[i].$node[0].dataset.x = selection[i].data.x;
           selection[i].$node[0].dataset.y = selection[i].data.y;
+          selection[i].$node[0].dataset.z = selection[i].data.z;
           selection[i].$node[0].dataset.rotate = selection[i].data.rotate;
+          selection[i].$node[0].dataset.rotateX = selection[i].data.rotateX;
+          selection[i].$node[0].dataset.rotateY = selection[i].data.rotateY;
           selection[i].$node[0].dataset.scale = selection[i].data.scale;
 
           config.redrawFunction(selection[i].$node[0]);
@@ -651,11 +716,11 @@ var builder = (function () {
 
       state.$node[0].dataset.scale = state.data.scale;
       state.$node[0].dataset.rotate = state.data.rotate;
-      state.$node[0].dataset.rotateX = state.data.rotateX; //new
-      state.$node[0].dataset.rotateY = state.data.rotateY; //new
+      state.$node[0].dataset.rotateX = state.data.rotateX; 
+      state.$node[0].dataset.rotateY = state.data.rotateY; 
       state.$node[0].dataset.x = state.data.x;
       state.$node[0].dataset.y = state.data.y; 
-      state.$node[0].dataset.z = state.data.z; //new
+      state.$node[0].dataset.z = state.data.z; 
 
       /**/
       //console.log(state.data,state.$node[0].dataset,state.$node[0].dataset===state.data);
@@ -880,6 +945,8 @@ $(function () {
   // copied from https://github.com/clairezed/ImpressEdit
   $(document).mousedown(function(event) {
 
+    var $body = $('body');
+
     $("#impress").data('event', {
         pos: {
             x: event.pageX,
@@ -899,8 +966,8 @@ $(function () {
           "-moz-user-select" : "none",
           "-ms-user-select" : "none",
           "user-select" : "none"
-        }
-
+        };
+        
         var transform = getTrans3D();
         var obj = angle(transform, event);
 
@@ -917,7 +984,7 @@ $(function () {
           transition: "all 0 ease 0" 
         })
 
-        $('body').css(styles);
+        $body.css(styles);
 
       });
 
@@ -949,27 +1016,16 @@ $(function () {
 
     // unbind handlers
     $(this).on("mouseup", function() {
-      $('body').css('cursor', 'default');
+      $body.css('cursor', 'default');
       $(this).off(".moveView");
       $(this).off(".rotateView");
     });
 
 
     // prevent the handlers of viewport on steps
-    $(this).on('mousedown mousewheel', '#impress .step', function(event) {
+    $(this).on('mousedown mousewheel', '#impress div.step', function(event) {
+      //console.log('user-select : ""')
       event.stopPropagation(); 
-      // revert back to selection on the step
-      
-      var styles = {
-        "-webkit-touch-callout" : "",
-        "-webkit-user-select" : "",
-        "-khtml-user-select" : "",
-        "-moz-user-select" : "",
-        "-ms-user-select" : "",
-        "user-select" : ""
-      }
-      
-      $('body').css(styles);
     
     });
    
