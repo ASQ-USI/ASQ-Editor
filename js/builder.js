@@ -623,9 +623,11 @@ var builder = (function () {
     var id, $step;
     var seq = sequence();
     id = 'new-slide' + seq;
-    while (!$("#"+id)) {
+    var dom = $("#"+id);
+    while (dom.length > 0) {
       seq = sequence();
       id = 'new-slide' + seq;
+      dom = $("#"+id);
     }
     $step = $('<div class="step"></div>').html('<h1>This is a new step ' + seq + '</h1> <p>How about some contents?</p>');
     $step[0].id = id;
