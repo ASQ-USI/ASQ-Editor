@@ -196,7 +196,7 @@ var ThumbManager = function (options, $){
         // add the delete button to each thumb
         .prepend('<a class="close" href="#">X</a>')
         .parent()
-          .prepend('<p>#'+ ref + '</p>')
+          .prepend('<p class="thumb-edit-id" contenteditable="true">'+ ref + '</p>')
           .prepend('<div class="drag"></div>');
   }
 

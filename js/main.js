@@ -32,7 +32,28 @@ window.asqEditor = (function () {
     // reenable scripts
     var activeHtml =  $saved.html().replace(/<script type=\"text\/xml\" /g, '<script ');
     var blob = new Blob([activeHtml], {type: "text/html;charset=utf-8"});
-    saveAs(blob, "presentation.html");   
+
+
+    $('<div><textarea id="_source" style="width:100%;height:100%">'+activeHtml+'</textarea></div>').dialog({ 
+      closeOnEscape: false,
+      width: 600,
+      height: 400,
+      modal: true,
+      title: "Presentation source:",
+      buttons: [{
+        text: "Save",
+        click: function () {
+            saveAs(blob, "presentation.html");
+          }
+        }
+      ],
+      open: function(  ) {
+        $("#_source").select();
+      } });
+
+    //if (window.prompt ("Copy presentation source: Ctrl+C, Enter - Click on Cancel to Save", activeHtml) == null) {
+    //BUG: this will cut off the source text!!
+    //};
 
   }
 

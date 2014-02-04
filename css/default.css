@@ -74,21 +74,20 @@ body {
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#feffff', endColorstr='#a0d8ef',GradientType=1 ); 
 */
   background: rgb(215, 215, 215);
-  background: -webkit-gradient(radial, 50% 50%, 0, 50% 50%, 500, from(rgb(240, 240, 240)), to(rgb(190, 190, 190)));
-  background: -webkit-radial-gradient(rgb(240, 240, 240), rgb(190, 190, 190));
-  background:    -moz-radial-gradient(rgb(240, 240, 240), rgb(190, 190, 190));
-  background:     -ms-radial-gradient(rgb(240, 240, 240), rgb(190, 190, 190));
-  background:      -o-radial-gradient(rgb(240, 240, 240), rgb(190, 190, 190));
-  background:         radial-gradient(rgb(240, 240, 240), rgb(190, 190, 190));
+  background: -webkit-gradient(radial, 50% 50%, 0, 50% 50%, 500, from(rgb(255, 255, 255)), to(rgb(255, 230, 117)));
+  background: -webkit-radial-gradient(rgb(255, 255, 255), rgb(255, 230, 117));
+  background:    -moz-radial-gradient(rgb(255, 255, 255), rgb(255, 230, 117));
+  background:     -ms-radial-gradient(rgb(255, 255, 255), rgb(255, 230, 117));
+  background:      -o-radial-gradient(rgb(255, 255, 255), rgb(255, 230, 117));
+  background:         radial-gradient(rgb(255, 255, 255), rgb(255, 230, 117));
 
   -webkit-font-smoothing: antialiased;
 }
 
 h1, h2, h3, h4 {
-  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", sans-serif;
-  font-weight: bold;
-  color: rgb(1, 7, 87);
-  font-variant: small-caps;
+  font-family: "Frutiger LT Std", "Helvetica Neue Light", "Helvetica Neue", sans-serif;
+  font-weight: 300;
+  color: rgb(0, 0, 0);
 }
 h1 {
   font-size: 2em;

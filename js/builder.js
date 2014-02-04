@@ -198,6 +198,9 @@ var builder = (function () {
       //create iframe to hold the oringal html
       $('body').append( '<iframe style="height:0;width:0;" id="asq-edit-original-source"></iframe>');
       
+      $('body').append( '<div id="dialog-save" title="Save" style="display: none;"></div>');
+      
+
       var $sourceIFrame =  $('#asq-edit-original-source')
       , iframeDoc = $sourceIFrame[0].contentDocument || $sourceIFrame[0].contentWindow.document;
 
@@ -308,10 +311,17 @@ var builder = (function () {
     });
 
     $('.button.save').on('click', function () { asqEditor.save(); });
-    $('.button.overview').on('click', function () { config['goto']('overview'); });
-    //$('.button.back').on('click', gotoPresentation);
-    // $('.button.add').on('click', addSlide);
-   
+    $('.button.overview').on('click', function (e) { 
+      /*
+      if (e.altKey) {
+        var transform = getTrans3D();
+        console.log(transform);
+        $("#overview").data.x = transform.translate3d[0];
+        $("#overview").data.y = transform.translate3d[1];
+        $("#overview").data.z = transform.translate3d[2];
+      } */
+      config['goto']('overview'); 
+    }); 
     $('.button.add').on('click', function() {
       var x = addSlide();
       thumbManager.insertThumb(x.attr('id'));
@@ -327,7 +337,6 @@ var builder = (function () {
       e.preventDefault();
       mouse.activeFunction = handlers[$(this).data('func')];
       loadData();
-      //console.log('loadata called')
       mouse.prevX = e.pageX;
       mouse.prevY = e.pageY;
       $(document).on('mousemove.handler1', handleMouseMove);
@@ -336,7 +345,6 @@ var builder = (function () {
       clearTimeout(showTimer);
     });
     $(document).on('mouseup', function () {
-      console.log("I should stop")
       mouse.activeFunction = false;
       $(document).off('mousemove.handler1');
     });
@@ -615,6 +623,10 @@ var builder = (function () {
     var id, $step;
     var seq = sequence();
     id = 'new-slide' + seq;
+    while (!$("#"+id)) {
+      seq = sequence();
+      id = 'new-slide' + seq;
+    }
     $step = $('<div class="step"></div>').html('<h1>This is a new step ' + seq + '</h1> <p>How about some contents?</p>');
     $step[0].id = id;
     $step[0].dataset.x = offset();
