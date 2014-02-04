@@ -276,7 +276,7 @@ var builder = (function () {
       , newIndex    = detail.newIndex;
 
 
-      var oldIndex = $("#"+slideRefId).index()
+      var oldIndex = $("#"+slideRefId).index();
 
       //ignore overview slide
       if(newIndex>0){
@@ -288,6 +288,47 @@ var builder = (function () {
       //CAUTION: this changes the internal steps of impress.js
       //we do this so that the users can view the correct order of steps
       ArrayMove(impress().steps(), oldIndex, newIndex)
+    });
+
+    $(document).on('thumbmanager:thumb-edit-id', function(event){
+      var detail    = event.originalEvent.detail
+      , slideRefId  = detail.slideRefId
+      , newId = detail.newId;
+
+      console.log('detail', detail)
+
+      if (newId == slideRefId) return; 
+
+      //check if new id is a valid id
+      if(! newId.match(/^[a-zA-Z][\w:.-]*$/)){
+        alert('Invalid id characters. \n D and NAME tokens must begin with a letter ([A-Za-z]) and may be followed by any number of letters, digits ([0-9]), hyphens ("-"), underscores ("_"), colons (":"), and periods (".").');
+        thumbManager.setThumbTitle(slideRefId, slideRefId);
+        return;
+      }
+
+      //check if id already exists
+      if($('#'+newId).length > 0){
+          alert('Id exists. Please choose another one');
+          thumbManager.setThumbTitle(slideRefId, slideRefId);
+        return;
+      }
+
+      //delete step from impress
+      config.deleteStep(slideRefId);
+
+      //update slide id
+      var $step = $('#' + slideRefId).attr('id', newId);
+
+      //add to impress with new id
+      config.creationFunction($step[0]);
+
+      //move to correct position in impress
+      //CAUTION: this changes the internal steps of impress.js
+      //we do this so that the users can view the correct order of steps
+      ArrayMove(impress().steps(), impress().steps().length -1 , $step.index())
+
+      //update thumbnail id
+      thumbManager.setThumbId(slideRefId, newId);
     });
 
     $(document).on('thumbmanager:thumb-delete', function(event){

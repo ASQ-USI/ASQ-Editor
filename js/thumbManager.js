@@ -10,6 +10,7 @@ var ThumbManager = function (options, $){
   , this.sels = {
     thumbsBarId: "#thumbs-bar",
     thumbsHolderId    : "#thumb-holder",
+    thumbEditIdClass : "thumb-edit-id", 
     thumbListClass    : "thumb-li",
     thumbContainerClass  : "thumb",
     slideThumbClass : "thumb-step",
@@ -70,7 +71,20 @@ var ThumbManager = function (options, $){
       triggerEvent(document, "thumbmanager:thumb-delete", {thumbId: thumbId, slideRefId: slideRefId}) 
     });
 
-    // when not clickin
+    //change slide id handler
+    $(sels.thumbsBarId).on("blur", '.' + sels.thumbEditIdClass, function(e){
+      var $thumbStep = $(this).siblings('.thumb').find('.' + sels.slideThumbClass)
+      , newId = this.textContent
+      , slideRefId = $thumbStep.attr('data-references');
+
+      triggerEvent(document, "thumbmanager:thumb-edit-id", {
+          slideRefId: slideRefId,
+          newId : newId}) 
+    });
+
+
+
+    // when not clicking
     // $(sels.thumbsBarId).on("click", '*', function(e){
     //   console.log("should clear");
     // });
@@ -129,11 +143,11 @@ var ThumbManager = function (options, $){
  //        {axis: 'y'}
  //      );
 
-    //make it selectable
+    // make it selectable
     $(sels.thumbsHolderId).shiftSelectable({ 
       distance: 10, //make sure that click events to .close are not lost
       filter: "> .thumb-li" , //FIXME this should come from the sels configuration
-      cancel: ".drag",
+      cancel: ".drag,.thumb-edit-id",
       stop: function( event, ui ) {
                 var $selection = $(sels.thumbsHolderId + ' .ui-selected');
         if($selection.length==1){
@@ -156,23 +170,17 @@ var ThumbManager = function (options, $){
       }
     });
 
-        $(sels.thumbsHolderId).sortable({
-          handle : '.drag',
-      stop: function(event, ui)
-        {
- console.log("triggered")
-          var $thumbStep  = $(ui.item).find('.' + sels.slideThumbClass)
-          , thumbId       = $thumbStep.attr('id')
-          , slideRefId    = $thumbStep.attr('data-references')
-          , newIndex      = $(ui.item).index();
-
-          console.log($thumbStep)
-
-          triggerEvent(document, "thumbmanager:thumb-sorted", {thumbId : thumbId, slideRefId : slideRefId, newIndex : newIndex}) 
-        }
-        },
-        {axis: 'y'}
-      );
+    $(sels.thumbsHolderId).sortable({
+      handle : '.drag',
+      cancel: '.thumb-edit-id',
+      stop: function(event, ui){
+        var $thumbStep  = $(ui.item).find('.' + sels.slideThumbClass)
+        , thumbId       = $thumbStep.attr('id')
+        , slideRefId    = $thumbStep.attr('data-references')
+        , newIndex      = $(ui.item).index();
+        triggerEvent(document, "thumbmanager:thumb-sorted", {thumbId : thumbId, slideRefId : slideRefId, newIndex : newIndex}) 
+      }
+    }, {axis: 'y'});
 
   }
 
@@ -213,6 +221,27 @@ var ThumbManager = function (options, $){
     //update $thumbs
     this.$thumbs = $("."+ this.sels.slideThumbClass);
     this.resizeThumbs();
+  }
+
+  /** @function setThumbTitle
+  *   @description: updates the title for the target thumb
+  */
+  ThumbManager.prototype.setThumbTitle = function(target, value){
+    $('#' + target + '-thumb')
+      .find('.'+this.sels.thumbEditIdClass)[0].textContent = value;
+  }
+
+  /** @function setThumbId
+  *   @description: updates the oldId with newId
+  */
+  ThumbManager.prototype.setThumbId = function(oldId, newId){
+    $('#' + oldId + '-thumb')
+      .attr('data-references', newId)
+      .attr('id', newId + '-thumb');
+
+    $('#' + oldId + '-clone')
+      .attr('data-references', newId)
+      .attr('id', newId + '-clone');
   }
 
   /** @function deleteThumb
@@ -332,8 +361,7 @@ var ThumbManager = function (options, $){
         .css(styles);
     });
 
-    return $clone
-
+    return $clone;
   }
 
   /** @function css
