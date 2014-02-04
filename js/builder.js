@@ -225,7 +225,8 @@ var builder = (function () {
 
     $controls = $('<div class="builder-controls"></div>').hide();
 
-  //  $('<div class="bt-delete"></div>').attr('title', 'Delete').click(deleteContents).appendTo($controls);
+    //FIXME: deleteContents is duplicated code with the handler form the thumbManager
+    //$('<div class="bt-delete"></div>').attr('title', 'Delete').click(deleteContents).appendTo($controls);
     $('<div class="bt-move border"></div>').attr('title', 'Move').data('func', 'move').appendTo($controls);
     $('<div class="bt-rotate border"></div>').attr('title', 'Rotate').data('func', 'rotate').appendTo($controls);
     $('<div class="bt-scale border"></div>').attr('title', 'Scale').data('func', 'scale').appendTo($controls);
@@ -292,7 +293,8 @@ var builder = (function () {
       , thumbId     = detail.thumbId
       , slideRefId  = detail.slideRefId
 
-      var r = confirm("Are you sure you want to delete this slide?");
+      //var r = confirm("Are you sure you want to delete this slide?");
+      var r = true;
 
       if (r == true) {      
         config.deleteStep(slideRefId);
@@ -663,6 +665,7 @@ var builder = (function () {
       //console.log($(this))
       if (r == true) {
         config.deleteStep(el.getAttribute("id"));
+        thumbManager.deleteThumb(el.getAttribute("id"));
         //console.log(  config)
         el.remove();
         // make showmenu not to display the deleted slides

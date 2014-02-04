@@ -131,13 +131,11 @@ var ThumbManager = function (options, $){
 
     //make it selectable
     $(sels.thumbsHolderId).shiftSelectable({ 
-      filter: "> .thumb-li" ,
+      distance: 10, //make sure that click events to .close are not lost
+      filter: "> .thumb-li" , //FIXME this should come from the sels configuration
       cancel: ".drag",
       stop: function( event, ui ) {
-        console.log("triggered")
-        var $selection = $(sels.thumbsHolderId + ' .ui-selected');
-        console.log($selection.length)
-        console.log(ui)
+                var $selection = $(sels.thumbsHolderId + ' .ui-selected');
         if($selection.length==1){
           var thumbId = $selection.attr('id')
           , slideRefId = $selection.attr('data-references');
@@ -153,8 +151,6 @@ var ThumbManager = function (options, $){
             slideRefIds.push($this.attr('data-references'))
           })
       
-         console.log(slideRefIds)
-
           triggerEvent(document, "thumbmanager:thumb-selection", {thumbIds: thumbIds, slideRefIds: slideRefIds}) 
         }
       }
