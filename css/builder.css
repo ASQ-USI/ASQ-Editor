@@ -712,7 +712,7 @@ select#circle-select{
   display:block;
 }
 
-#thumbs-bar .thumb-li p{
+.thumb-edit-id{
   color: white;
   font-weight: 500;
   margin:0;
@@ -727,7 +727,9 @@ select#circle-select{
   padding : 10px;
 }
 
-#thumbs-bar .thumb.active, #thumbs-bar .thumb-li.ui-selected .thumb{
+#thumbs-bar .thumb.active,
+ #thumbs-bar .thumb-li.ui-selected .thumb,
+ #thumbs-bar .thumb-li.selected .thumb {
   border-color:  rgb(255,200,100);  
 }
 

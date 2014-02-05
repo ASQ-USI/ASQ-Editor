@@ -47,40 +47,26 @@ var ThumbManager = function (options, $){
     , sels = this.sels;
 
     // setup resize listeners
-
-    // $(sels.thumbsBarId).on("click", '.' + sels.slideThumbClass, function(e){
-    //   e.stopPropagation();
-    //   //return of ctrl key is pressent cause we're going for multiple selection
-    //   console.log(e)
-    //   if ( e.ctrlKey || e.metaKey ) {
-    //     console.log("Niax")
-    //     return;}
-
-    //   var thumbId = $(this).attr('id')
-    //   , slideRefId = $(this).attr('data-references');
-
-    //   triggerEvent(document, "thumbmanager:thumb-clicked", {thumbId: thumbId, slideRefId: slideRefId}) 
-    // });
-
-    $(sels.thumbsBarId).on("click", '.' + sels.thumbContainerClass + " .close", function(e){
-      e.stopPropagation();
-      var $thumbStep = $(this).parent().find('.' + sels.slideThumbClass)
-      , thumbId = $thumbStep.attr('id')
-      , slideRefId = $thumbStep.attr('data-references');
-
-      triggerEvent(document, "thumbmanager:thumb-delete", {thumbId: thumbId, slideRefId: slideRefId}) 
-    });
-
-    //change slide id handler
     $(sels.thumbsBarId)
-      .on("blur", '.' + sels.thumbEditIdClass, function(e){
-      var $thumbStep = $(this).siblings('.thumb').find('.' + sels.slideThumbClass)
-      , newId = this.textContent
-      , slideRefId = $thumbStep.attr('data-references');
+      //delete handler
+      .on("click", '.' + sels.thumbContainerClass + " .close", function(e){
+        e.stopPropagation();
+        var $thumbStep = $(this).parent().find('.' + sels.slideThumbClass)
+        , thumbId = $thumbStep.attr('id')
+        , slideRefId = $thumbStep.attr('data-references');
 
-      triggerEvent(document, "thumbmanager:thumb-edit-id", {
+        triggerEvent(document, "thumbmanager:thumb-delete", {thumbId: thumbId, slideRefId: slideRefId}); 
+    })
+      //change slide id handler
+      .on("blur", '.' + sels.thumbEditIdClass, function(e){
+        var $thumbStep = $(this).siblings('.thumb').find('.' + sels.slideThumbClass)
+        , newId = this.textContent
+        , slideRefId = $thumbStep.attr('data-references');
+
+        triggerEvent(document, "thumbmanager:thumb-edit-id", {
           slideRefId: slideRefId,
-          newId : newId}) 
+          newId : newId
+        }); 
     })
       //on enter do not got to a new line
       .on("keydown", '.' + sels.thumbEditIdClass, function(e){
@@ -88,8 +74,6 @@ var ThumbManager = function (options, $){
           this.blur();
         }
     });
-
-
 
     // when not clicking
     // $(sels.thumbsBarId).on("click", '*', function(e){
@@ -132,31 +116,40 @@ var ThumbManager = function (options, $){
     that.$thumbs = $("."+ this.sels.slideThumbClass);
     that.resizeThumbs();
 
-    //make it sortable
- //    $(sels.thumbsHolderId).sortable({
- //      stop: function(event, ui)
- //        {
- // console.log("triggered")
- //          var $thumbStep  = $(ui.item).find('.' + sels.slideThumbClass)
- //          , thumbId       = $thumbStep.attr('id')
- //          , slideRefId    = $thumbStep.attr('data-references')
- //          , newIndex      = $(ui.item).index();
-
- //          console.log($thumbStep)
-
- //          triggerEvent(document, "thumbmanager:thumb-sorted", {thumbId : thumbId, slideRefId : slideRefId, newIndex : newIndex}) 
- //        }
- //        },
- //        {axis: 'y'}
- //      );
-
-    // make it selectable
-    $(sels.thumbsHolderId).shiftSelectable({ 
-      distance: 10, //make sure that click events to .close are not lost
-      filter: "> .thumb-li" , //FIXME this should come from the sels configuration
-      cancel: ".drag,.thumb-edit-id",
-      stop: function( event, ui ) {
-                var $selection = $(sels.thumbsHolderId + ' .ui-selected');
+    $(sels.thumbsHolderId).multisortable({
+      items: ".thumb-li",
+      stop: function(e){
+        var triggerSortEvent = function (el){
+          var $thumbStep  = $(el).find('.' + sels.slideThumbClass)
+            , thumbId       = $thumbStep.attr('id')
+            , slideRefId    = $thumbStep.attr('data-references')
+            , newIndex      = $(el).index();
+          console.log('trigger 4', slideRefId)
+          triggerEvent(document, "thumbmanager:thumb-sorted", {
+            thumbId : thumbId,
+            slideRefId : slideRefId,
+            newIndex : newIndex
+          })
+        };
+       
+        var $selection = $(sels.thumbsHolderId + ' .selected');
+        // if it's just one no need to run through the whole array
+        if($selection.length==1){
+          triggerSortEvent($selection[0]);
+        }else{
+          $(sels.thumbsHolderId + ' .thumb-li')
+          .sort(function(a,b){
+            return  ($(a).index() <  $(b).index() ? -1 : 1);
+          })
+          .each(function(){
+            console.log()
+            triggerSortEvent(this);
+          });
+        }
+      },
+      click: function(e){ 
+        console.log("I'm selected.");
+        var $selection = $(sels.thumbsHolderId + ' .selected');
         if($selection.length==1){
           var thumbId = $selection.attr('id')
           , slideRefId = $selection.attr('data-references');
@@ -174,20 +167,8 @@ var ThumbManager = function (options, $){
       
           triggerEvent(document, "thumbmanager:thumb-selection", {thumbIds: thumbIds, slideRefIds: slideRefIds}) 
         }
-      }
-    });
-
-    $(sels.thumbsHolderId).sortable({
-      handle : '.drag',
-      cancel: '.thumb-edit-id',
-      stop: function(event, ui){
-        var $thumbStep  = $(ui.item).find('.' + sels.slideThumbClass)
-        , thumbId       = $thumbStep.attr('id')
-        , slideRefId    = $thumbStep.attr('data-references')
-        , newIndex      = $(ui.item).index();
-        triggerEvent(document, "thumbmanager:thumb-sorted", {thumbId : thumbId, slideRefId : slideRefId, newIndex : newIndex}) 
-      }
-    }, {axis: 'y'});
+     }
+  });
 
   }
 
@@ -231,7 +212,7 @@ var ThumbManager = function (options, $){
         // add the delete button to each thumb
         .prepend('<a class="close" href="#">X</a>')
         .parent()
-          .prepend('<p class="thumb-edit-id" contenteditable="true">'+ ref + '</p>')
+          .prepend('<div class="thumb-edit-id" contenteditable="true">'+ ref + '</div>')
           .prepend('<div class="drag"></div>');
 
     //clean up body impress-on- class and restore previous one
