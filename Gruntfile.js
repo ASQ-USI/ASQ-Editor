@@ -22,7 +22,21 @@ module.exports = function(grunt) {
       },
       dist: {
         // the files to concatenate
-        src: ['js/lib/*.js','compiled/*.js','js/*.js'],
+
+        src: [
+          'js/lib/jquery-2.1.0.js',
+          'js/lib/lodash-2.4.1.js',
+          'js/lib/jquery-ui-1.10.3.custom.js',
+          'js/lib/jquery.multisortable.js',
+          'js/lib/FileSaver.min.js',
+          'js/lib/mousewheel.js',
+          'js/lib/dust-full-1.2.5.js',
+          'compiled/*.js',
+          'js/layoutManager.js',  
+          'js/thumbManager.js',  
+          'js/lib/nicEdit.js',
+          'js/builder.js',
+          ],
         // the location of the resulting JS file
         dest: 'dist/<%= pkg.name %>.js'
       }
