@@ -565,11 +565,7 @@ function LayoutManager (options, $){
 
       that.redrawFunction(obj.$node[0]);
     });
-
-
   }
 
   this.init();
-
 };
-

@@ -212,8 +212,7 @@ var ThumbManager = function (options, $){
         // add the delete button to each thumb
         .prepend('<a class="close" href="#">X</a>')
         .parent()
-          .prepend('<div class="thumb-edit-id" contenteditable="true">'+ ref + '</div>')
-          .prepend('<div class="drag"></div>');
+          .prepend('<div class="thumb-edit-id" contenteditable="true">'+ ref + '</div>');
 
     //clean up body impress-on- class and restore previous one
     $("body").removeClass("impress-on-"+ref);
