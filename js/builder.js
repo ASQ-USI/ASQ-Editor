@@ -1,3 +1,7 @@
+
+//preserve whitespace (when exporting the source)
+dust.optimizers.format = function(ctx, node) { return node };
+
 var builder = (function () {
 
   'use strict';

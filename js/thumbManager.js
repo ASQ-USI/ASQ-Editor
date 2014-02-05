@@ -202,6 +202,24 @@ var ThumbManager = function (options, $){
     , $thumb = $(thumb)
     , ref = $thumb.attr('data-references');
 
+    //look if the body has an impress-on-* class
+    var saved_body_class;
+    var body_classes = $("body")[0].classList;
+    for (i = 0; i<body_classes.length; i++) {
+      var c = body_classes[i];
+      if (c.match("^impress-on-")) {
+        saved_body_class = c;
+      }
+    }
+
+    if (saved_body_class) {
+        $("body").removeClass(saved_body_class);
+    }
+
+    //force the body to be on the current ref slide
+    $("body").addClass("impress-on-"+ref);
+
+
     $(sels.thumbsBarId + ' ' + sels.thumbsHolderId).append($thumb)
     $thumb
       .wrap('<li id="' + ref + '-thumb" class="'+ sels.thumbListClass +'" data-references="' + ref + '"></li>')
@@ -213,6 +231,13 @@ var ThumbManager = function (options, $){
         .parent()
           .prepend('<p class="thumb-edit-id" contenteditable="true">'+ ref + '</p>')
           .prepend('<div class="drag"></div>');
+
+    //clean up body impress-on- class and restore previous one
+    $("body").removeClass("impress-on-"+ref);
+
+    if (saved_body_class) {
+        $("body").addClass(saved_body_class);
+    }
   }
 
 
@@ -343,6 +368,7 @@ var ThumbManager = function (options, $){
         "user-select" : ""
     };
 
+
     $clone
       //change id only if not empty
       .attr("id", (cloneId === undefined || cloneId == '') ? '' : cloneId + "-clone")
@@ -368,7 +394,12 @@ var ThumbManager = function (options, $){
         .css(styles);
     });
 
-    return $clone;
+
+
+
+    return $clone
+
+
   }
 
   /** @function css
@@ -402,6 +433,7 @@ var ThumbManager = function (options, $){
               s[l[0].toLowerCase()] = (l[1]);
           };
       }
+      console.log(s);
       return s;
   }
 
