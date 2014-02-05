@@ -55,6 +55,14 @@ module.exports = function(grunt) {
       }
     },
 
+    //minify css
+    cssmin : {
+        css:{
+          src: 'css/builder.css',
+          dest: 'dist/<%= pkg.name %>.min.css'
+        }
+      },
+
     //dust compilation
     dust: {
       defaults: {
@@ -80,7 +88,7 @@ module.exports = function(grunt) {
         livereload: true
       },
       minimal: {
-        files: ['js/*.js','dusts/**/*.dust'],
+        files: ['js/*.js','dusts/**/*.dust', 'css/**/*.css'],
         tasks: ['dust'],
         options: {
           interrupt: true
@@ -91,11 +99,13 @@ module.exports = function(grunt) {
 
   // Default task(s).
   grunt.registerTask('default', ['watch']);
-  grunt.registerTask('build', ['dust', 'concat', 'uglify']);
+  grunt.registerTask('build', ['dust', 'concat', 'uglify', 'cssmin']);
 
   //npm tasks
-  grunt.loadNpmTasks('grunt-contrib-uglify');
+  
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-contrib-cssmin');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-dust');
 };
