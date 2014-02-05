@@ -72,7 +72,8 @@ var ThumbManager = function (options, $){
     });
 
     //change slide id handler
-    $(sels.thumbsBarId).on("blur", '.' + sels.thumbEditIdClass, function(e){
+    $(sels.thumbsBarId)
+      .on("blur", '.' + sels.thumbEditIdClass, function(e){
       var $thumbStep = $(this).siblings('.thumb').find('.' + sels.slideThumbClass)
       , newId = this.textContent
       , slideRefId = $thumbStep.attr('data-references');
@@ -80,6 +81,12 @@ var ThumbManager = function (options, $){
       triggerEvent(document, "thumbmanager:thumb-edit-id", {
           slideRefId: slideRefId,
           newId : newId}) 
+    })
+      //on enter do not got to a new line
+      .on("keydown", '.' + sels.thumbEditIdClass, function(e){
+        if(e.keyCode == 13) {
+          this.blur();
+        }
     });
 
 
