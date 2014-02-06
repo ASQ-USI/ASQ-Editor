@@ -13,6 +13,11 @@ There is an [About](https://github.com/giokokos/editor/wiki/About) page too.
 
 **NOTE:** Everything is done on the client side therefore there isn't any download utility for the moment. 
 
+## BOOKMARKLET
+Add the bookmarklet to you browser:
+  <a href='javascript:!function(){if("undefined"==typeof window.builder){var a=document.createElement("link");a.setAttribute("rel","stylesheet"),a.setAttribute("type","text/css"),a.setAttribute("href","http://asq.inf.usi.ch/editor/dist/ASQ-Editor.min.css"),document.getElementsByTagName("head")[0].appendChild(a);var b=document.createElement("SCRIPT");b.type="text/javascript",b.src="http://asq.inf.usi.ch/editor/dist/ASQ-Editor.min.js","undefined"!=typeof b&&document.getElementsByTagName("head")[0].appendChild(b)}b.onloadDone=!1,b.onload=function(){b.onloadDone=!0,builder.bootstrap()},aEScript.onReadystatechange=function(){"loaded"!==aEScript.readyState||aEScript.onloadDone||(aEScript.onloadDone=!0,builder.bootstrap())}}();)'><strong>Bookmark me!</strong></a>
+   to instantly edit your impress.js presentations _(requires the modified impress.js)_
+
 ## FEATURES
 
 * Create slides
