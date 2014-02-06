@@ -245,8 +245,8 @@ var builder = (function () {
     }, jQuery);
   }
 
-  //boostrap builder with impress functions
-  function boostrap(){
+  //bootstrap builder with impress functions
+  function bootstrap(){
     var iAPI = impress();
     builder.init({
       "goto": iAPI['goto'], //it makes me feel better this way
@@ -908,7 +908,7 @@ var builder = (function () {
   // return editor API
   return {
     init: init,
-    boostrap: boostrap
+    bootstrap: bootstrap
   };
 
 
