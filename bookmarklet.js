@@ -21,8 +21,8 @@
     builder.bootstrap();
   };
   aEScript.onReadystatechange=function(){
-    if(aEScript.readyState==='loaded'&& !aEScript.onloadDone){
-      aEScript.onloadDone=true;
+    if(aES.readyState==='loaded'&& !aES.onloadDone){
+      aES.onloadDone=true;
       builder.bootstrap();
     }
   } 
