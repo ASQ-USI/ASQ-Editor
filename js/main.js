@@ -2,61 +2,7 @@ window.asqEditor = (function () {
   'use strict';
 
   var iAPI = impress();
-  var myNicEditor = new nicEditor();
-
-  // makes the element with the given id editable
-  function makeEditable(id){ 
-    myNicEditor.addInstance(id);
-  }
-
-  function save(){
-
-    //clean up impress styles
-    var $clone = $('#impress').clone();
-    $clone
-      .removeAttr('style')
-      .find('.step')
-        .unwrap()
-        .removeClass('past present future active')
-        .removeAttr('contenteditable')
-        .removeAttr('style');
-
-    var content = $clone.eq(0).html();
-
-    //get source html from iframe
-    var $saved = $('#asq-edit-original-source').contents().find('html').clone();
-    $saved.wrap('<html />')
-    $saved = $saved.parents('html')
-    $saved.find('#impress').html(content);
-    console.log($saved.html()); 
-    // reenable scripts
-    var activeHtml =  $saved.html().replace(/<script type=\"text\/xml\" /g, '<script ');
-    var blob = new Blob([activeHtml], {type: "text/html;charset=utf-8"});
-
-
-    $('<div><textarea id="_source" style="width:100%;height:100%">'+activeHtml+'</textarea></div>').dialog({ 
-      closeOnEscape: false,
-      width: 600,
-      height: 400,
-      modal: true,
-      title: "Presentation source:",
-      buttons: [{
-        text: "Save",
-        click: function () {
-            saveAs(blob, "presentation.html");
-          }
-        }
-      ],
-      open: function(  ) {
-        $("#_source").select();
-      } });
-
-    //if (window.prompt ("Copy presentation source: Ctrl+C, Enter - Click on Cancel to Save", activeHtml) == null) {
-    //BUG: this will cut off the source text!!
-    //};
-
-  }
-
+ 
   document.addEventListener("keydown", function (event) {
     // Escape button
     if (event.keyCode == 27) {
@@ -75,19 +21,8 @@ window.asqEditor = (function () {
   }
 
   if (window.location.search.match(/edit/)) {
+    if('undefined' == typeof builder) return;
 
-  //setup niceditor. We add the current steps
-  //for new slides we call the makeEditable function
-  bkLib.onDomLoaded(function() {
-    myNicEditor.setPanel('myNicPanel');
-
-    //make each step editable
-    $('.step:not(#overview)').each(function(){
-      myNicEditor.addInstance(this.id);
-    });
-  });
-
-  //  iAPI.showMenu();
     builder.init({
       "goto": iAPI['goto'], //it makes me feel better this way
       creationFunction: iAPI.newStep, //future API method that adds a new step
@@ -152,10 +87,6 @@ window.asqEditor = (function () {
 
   if (window.location.search.match(/print/)) {
     window.print();
-  }
-
-  return {
-    save: save
   }
 
 }());

@@ -38,7 +38,7 @@ module.exports = function(grunt) {
           'js/builder.js',
           ],
         // the location of the resulting JS file
-        dest: 'dist/<%= pkg.name %>.js'
+        dest: 'dist/<%= pkg.name.toLowerCase() %>.js'
       }
     },
 
@@ -50,7 +50,7 @@ module.exports = function(grunt) {
       },
       dist: {
         files: {
-          'dist/<%= pkg.name %>.min.js': ['<%= concat.dist.dest %>'],
+          'dist/<%= pkg.name.toLowerCase() %>.min.js': ['<%= concat.dist.dest %>'],
           'dist/bookmarklet.min.js': ['bookmarklet.js']
         }
       }
@@ -60,7 +60,7 @@ module.exports = function(grunt) {
     cssmin : {
         css:{
           src: 'css/builder.css',
-          dest: 'dist/<%= pkg.name %>.min.css'
+          dest: 'dist/<%= pkg.name.toLowerCase() %>.min.css'
         }
       },
 
