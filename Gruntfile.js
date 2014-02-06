@@ -22,7 +22,6 @@ module.exports = function(grunt) {
       },
       dist: {
         // the files to concatenate
-
         src: [
           'js/lib/jquery-2.1.0.js',
           'js/lib/lodash-2.4.1.js',
@@ -90,7 +89,7 @@ module.exports = function(grunt) {
       },
       minimal: {
         files: ['js/*.js','dusts/**/*.dust', 'css/**/*.css'],
-        tasks: ['dust'],
+        tasks: ['dust', 'concat'],
         options: {
           interrupt: true
         },

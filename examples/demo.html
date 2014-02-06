@@ -6,10 +6,10 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <title>Editor Demo</title>
   <meta name="description" content="Impress.js Editor">
-  <meta name="author" content="George Kokosioulis">
+  <meta name="author" content="George Kokosioulis, Vasileios Triglianos">
   <link href="css/logoAnim.css" rel="stylesheet">
   <link href="css/default.css" rel="stylesheet">
-  <link href="dist/asq-editor.min.css" rel="stylesheet">
+  <link href="../css/builder.css" rel="stylesheet">
 
 </head>
 
@@ -23,8 +23,6 @@
   <div id="myNicPanel" ></div> <!-- Init nicEdit -->
 
   <div id="impress">
-
-    <div id="overview" class="step" data-x="2000" data-y="1000" data-scale="4.5"></div>
 
     <div id="slide1" class="step" data-x="0" data-y="845" data-scale="1" data-rotate="0">
       <div style="text-align:center">
@@ -116,6 +114,8 @@
       <p>Text for Test5</p>
     </div>
 
+    <div id="overview" class="step" data-x="2000" data-y="1000" data-scale="4.5"></div>
+
     
 <!--     <div class="hint">
       <p>Use a spacebar or arrow keys to navigate</p>
@@ -123,10 +123,9 @@
 
   </div>
 
-  <script src="js/lib/nicEdit.js"></script>
-  <script src="js/lib/jquery-2.1.0.js"></script>
-  <script src="js/impress.js"></script>
-  <script src="dist/asq-editor.js"></script>
+  <script src="../js/lib/jquery-2.1.0.js"></script>
+  <script src="../js/impress.js"></script>
+  <script src="../dist/asq-editor.js"></script>
   <script src="js/main.js"></script>
   <script src="js/canvas.js"></script>
  

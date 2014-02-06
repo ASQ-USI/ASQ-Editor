@@ -23386,7 +23386,7 @@ function LayoutManager (options, $){
       .parent()
         .css("background", $('body').css('background'))
         // add the delete button to each thumb
-        .prepend('<a class="close" href="#">X</a>')
+        .prepend('<a class="close" href="#">&times;</a>')
         .parent()
           .prepend('<div class="thumb-edit-id" contenteditable="true">'+ ref + '</div>');
 
@@ -25513,6 +25513,20 @@ var builder = (function () {
     }, jQuery);
   }
 
+  //boostrap builder with impress functions
+  function boostrap(){
+    var iAPI = impress();
+    builder.init({
+      "goto": iAPI['goto'], //it makes me feel better this way
+      creationFunction: iAPI.newStep, //future API method that adds a new step
+      redrawFunction: iAPI.initStep, //future API method that (re)draws the step
+      deleteStep: iAPI.deleteStep,
+      showMenu: iAPI.showMenu,
+      setTransformationCallback: iAPI.setTransformationCallback, //future API method that lets me know when transformations change
+      makeEditable: makeEditable
+    });
+  }
+
   function init(conf) {
 
     config = $.extend(config, conf);
@@ -26161,7 +26175,8 @@ var builder = (function () {
 
   // return editor API
   return {
-    init: init
+    init: init,
+    boostrap: boostrap
   };
 
 
@@ -26426,16 +26441,4 @@ $(function () {
     
     });
   }); 
-});
-
-//init builder with impress functions
-var iAPI = impress();
-builder.init({
-  "goto": iAPI['goto'], //it makes me feel better this way
-  creationFunction: iAPI.newStep, //future API method that adds a new step
-  redrawFunction: iAPI.initStep, //future API method that (re)draws the step
-  deleteStep: iAPI.deleteStep,
-  showMenu: iAPI.showMenu,
-  setTransformationCallback: iAPI.setTransformationCallback, //future API method that lets me know when transformations change
-  makeEditable: makeEditable
 });

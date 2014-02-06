@@ -161,22 +161,22 @@ body.impress-on-overview #overview.step {
 
 
 .bt-move{
-  background: url(https://raw.github.com/ASQ-USI/ASQ-Editor/devel/img/move.png) no-repeat center;
+  background: url(http://asq.inf.usi.ch/editor/img/move.png) no-repeat center;
   cursor: move;
 }
 
 .bt-rotate{
-  background: url(https://raw.github.com/ASQ-USI/ASQ-Editor/devel/img/rotate.png) no-repeat center;
+  background: url(http://asq.inf.usi.ch/editor/img/rotate.png) no-repeat center;
   cursor: move;
 }
 
 .bt-scale{
-  background: url(https://raw.github.com/ASQ-USI/ASQ-Editor/devel/img/scale.png) no-repeat center;
+  background: url(http://asq.inf.usi.ch/editor/img/scale.png) no-repeat center;
   cursor: move;
 }
 
 .bt-rotateX { 
-  background: url(https://raw.github.com/ASQ-USI/ASQ-Editor/devel/img/loop.png) no-repeat center;
+  background: url(http://asq.inf.usi.ch/editor/img/loop.png) no-repeat center;
   cursor: move;
 }
 
@@ -384,11 +384,11 @@ a.back-button:hover {
 }
 
 .button.save {
-  background: #40cb90 url("https://raw.github.com/ASQ-USI/ASQ-Editor/devel/img/download.png") no-repeat center;
+  background: #40cb90 url("http://asq.inf.usi.ch/editor/img/download.png") no-repeat center;
 }
 
 .button.overview {
-  background: #40cb90 url("https://raw.github.com/ASQ-USI/ASQ-Editor/devel/img/eye.png") no-repeat center;
+  background: #40cb90 url("http://asq.inf.usi.ch/editor/img/eye.png") no-repeat center;
 }
 
 .button:hover {
@@ -420,7 +420,7 @@ a.back-button:hover {
   float:left;
   width:50px;
   height:50px;
-  background: url("https://raw.github.com/ASQ-USI/ASQ-Editor/devel/img/circle.png") center no-repeat;
+  background: url("http://asq.inf.usi.ch/editor/img/circle.png") center no-repeat;
 }
 
 .circle-dot{
@@ -428,11 +428,11 @@ a.back-button:hover {
   display:block;
   width:9px;
   height:9px;
-  background: url("https://raw.github.com/ASQ-USI/ASQ-Editor/devel/img/AlignWidgetD.png");
+  background: url("http://asq.inf.usi.ch/editor/img/AlignWidgetD.png");
 }
 
 .circle-dot.active{
-  background: url("https://raw.github.com/ASQ-USI/ASQ-Editor/devel/img/AlignWidgetH.png");
+  background: url("http://asq.inf.usi.ch/editor/img/AlignWidgetH.png");
 }
 
 .alignment-circle #top-left{
@@ -522,7 +522,7 @@ a.back-button:hover {
 }
 
 .alignment-row  a{
-  background: url("https://raw.github.com/ASQ-USI/ASQ-Editor/devel/img/AlignRowCenter.png") center no-repeat;
+  background: url("http://asq.inf.usi.ch/editor/img/AlignRowCenter.png") center no-repeat;
 }
 
 .alignment-column {
@@ -531,7 +531,7 @@ a.back-button:hover {
 }
 
  .alignment-column a{
-  background: url("https://raw.github.com/ASQ-USI/ASQ-Editor/devel/img/AlignColumnCenter.png") center no-repeat;
+  background: url("http://asq.inf.usi.ch/editor/img/AlignColumnCenter.png") center no-repeat;
 }
 
 .spread-row {
@@ -540,7 +540,7 @@ a.back-button:hover {
 }
 
 .spread-row  a{
-  background: url("https://raw.github.com/ASQ-USI/ASQ-Editor/devel/img/DistributeRow.png") center no-repeat;
+  background: url("http://asq.inf.usi.ch/editor/img/DistributeRow.png") center no-repeat;
 }
 
 .spread-column {
@@ -549,7 +549,7 @@ a.back-button:hover {
 }
 
 .spread-column a{         
-  background: url("https://raw.github.com/ASQ-USI/ASQ-Editor/devel/img/DistributeColumn.png") center no-repeat;
+  background: url("http://asq.inf.usi.ch/editor/img/DistributeColumn.png") center no-repeat;
 }
 
 .spacing {
@@ -576,7 +576,7 @@ a.back-button:hover {
 }
 
 .offset-horizontal a {
-  background: url("https://raw.github.com/ASQ-USI/ASQ-Editor/devel/img/EvenRow.png") center no-repeat;
+  background: url("http://asq.inf.usi.ch/editor/img/EvenRow.png") center no-repeat;
 }
 
 .offset-vertical {
@@ -585,7 +585,7 @@ a.back-button:hover {
 }
 
 .offset-vertical a{
-  background: url("https://raw.github.com/ASQ-USI/ASQ-Editor/devel/img/EvenColumn.png") center no-repeat;
+  background: url("http://asq.inf.usi.ch/editor/img/EvenColumn.png") center no-repeat;
 }
 
 /**********************************************
@@ -610,11 +610,11 @@ a.back-button:hover {
 }
 
 .grid-holder a {
-  background: url("https://raw.github.com/ASQ-USI/ASQ-Editor/devel/img/SnapToGrid.png") center no-repeat;
+  background: url("http://asq.inf.usi.ch/editor/img/SnapToGrid.png") center no-repeat;
 }
 
 .circle-holder a {
-  background: url("https://raw.github.com/ASQ-USI/ASQ-Editor/devel/img/SnapToCircle.png") center no-repeat;
+  background: url("http://asq.inf.usi.ch/editor/img/SnapToCircle.png") center no-repeat;
 }
 
 .custom-layouts input {
@@ -726,7 +726,7 @@ select#circle-select{
 }
 
 .button.back {
-  background: rgb(65, 65, 65) url("https://raw.github.com/ASQ-USI/ASQ-Editor/devel/img/arrow_left.png") no-repeat center;
+  background: rgb(65, 65, 65) url("http://asq.inf.usi.ch/editor/img/arrow_left.png") no-repeat center;
 }
 
 .button.back:hover {
@@ -736,7 +736,7 @@ select#circle-select{
 .button.add {
   width: 35px;
   height: 35px;
-  background: url("https://raw.github.com/ASQ-USI/ASQ-Editor/devel/img/plus.png") no-repeat center;
+  background: url("http://asq.inf.usi.ch/editor/img/plus.png") no-repeat center;
   margin-top: 15px;
 }
 
@@ -763,16 +763,16 @@ select#circle-select{
   right: -11px;
   display: block;
   width: 18px;
-  border-radius: 14px;
+  border-radius: 18px;
   border: 2px solid white;
   background: rgb(40, 41, 41);
   text-align: center;
   text-decoration: none;
   color: white;
-  font-family: "Helvetica-Neue", "Helvetica";
-  font-weight: 500;
-  font-size: 12px;
-  line-height: 18px;
+  font-family: "Helvetica";
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 15px;
   height: 18px;
   opacity:1;
   z-index: 200;
