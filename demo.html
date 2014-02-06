@@ -144,39 +144,7 @@
   <script>
   (function(){
 
-  var aeStyle=document.createElement("link")
-  aeStyle.setAttribute("rel", "stylesheet")
-  aeStyle.setAttribute("type", "text/css")
-  aeStyle.setAttribute("href", 'https://raw.github.com/ASQ-USI/ASQ-Editor/devel/dist/ASQ-Editor.min.css')
-  document.getElementsByTagName('head')[0].appendChild(aeStyle);
-
-  var aEScript=document.createElement('SCRIPT');
-  aEScript.type='text/javascript';
-  aEScript.src='https://raw.github.com/ASQ-USI/ASQ-Editor/devel/dist/ASQ-Editor.min.js';
-  if(typeof(aEScript)!=='undefined'){
-    document.getElementsByTagName('head')[0].appendChild(aEScript);
-  }
-  aEScript.onloadDone=false;//for Opera
-  aEScript.onload=function(){
-    aEScript.onloadDone=true;
-    
-    //init builder with impress functions
-    var iAPI = impress();
-    builder.init({
-      "goto": iAPI['goto'], //it makes me feel better this way
-      creationFunction: iAPI.newStep, //future API method that adds a new step
-      redrawFunction: iAPI.initStep, //future API method that (re)draws the step
-      deleteStep: iAPI.deleteStep,
-      showMenu: iAPI.showMenu,
-      setTransformationCallback: iAPI.setTransformationCallback, //future API method that lets me know when transformations change
-      makeEditable: makeEditable
-    });
-  };
-  aEScript.onReadystatechange=function(){
-    if(aEScript.readyState==='loaded'&& !aEScript.onloadDone){
-      aEScript.onloadDone=true;callback();
-    }
-  }  
+ 
 
 })();
 </script>

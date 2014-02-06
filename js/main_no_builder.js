@@ -89,8 +89,4 @@ window.asqEditor = (function () {
     window.print();
   }
 
-  return {
-    save: save
-  }
-
 }());

@@ -26425,9 +26425,7 @@ $(function () {
       event.stopPropagation(); 
     
     });
-   
   }); 
-
 });
 
 //init builder with impress functions
@@ -26441,4 +26439,3 @@ builder.init({
   setTransformationCallback: iAPI.setTransformationCallback, //future API method that lets me know when transformations change
   makeEditable: makeEditable
 });
-    
