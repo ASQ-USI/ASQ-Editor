@@ -2,6 +2,64 @@
 //preserve whitespace (when exporting the source)
 dust.optimizers.format = function(ctx, node) { return node };
 
+
+var iAPI = impress();
+var myNicEditor = new nicEditor();
+
+// makes the element with the given id editable
+function makeEditable(id){ 
+  myNicEditor.addInstance(id);
+}
+
+
+function save(){
+
+  //clean up impress styles
+  var $clone = $('#impress').clone();
+  $clone
+    .removeAttr('style')
+    .find('.step')
+      .unwrap()
+      .removeClass('past present future active')
+      .removeAttr('contenteditable')
+      .removeAttr('style');
+
+  var content = $clone.eq(0).html();
+
+  //get source html from iframe
+  var $saved = $('#asq-edit-original-source').contents().find('html').clone();
+  $saved.wrap('<html />')
+  $saved = $saved.parents('html')
+  $saved.find('#impress').html(content);
+  console.log($saved.html()); 
+  // reenable scripts
+  var activeHtml =  $saved.html().replace(/<script type=\"text\/xml\" /g, '<script ');
+  var blob = new Blob([activeHtml], {type: "text/html;charset=utf-8"});
+
+
+  $('<div><textarea id="_source" style="width:100%;height:100%">'+activeHtml+'</textarea></div>').dialog({ 
+    closeOnEscape: false,
+    width: 600,
+    height: 400,
+    modal: true,
+    title: "Presentation source:",
+    buttons: [{
+      text: "Save",
+      click: function () {
+          saveAs(blob, "presentation.html");
+        }
+      }
+    ],
+    open: function(  ) {
+      $("#_source").select();
+    } });
+
+  //if (window.prompt ("Copy presentation source: Ctrl+C, Enter - Click on Cancel to Save", activeHtml) == null) {
+  //BUG: this will cut off the source text!!
+  //};
+
+}
+
 var builder = (function () {
 
   'use strict';
@@ -193,6 +251,17 @@ var builder = (function () {
 
     config = $.extend(config, conf);
 
+    //setup niceditor. We add the current steps
+    //for new slides we call the makeEditable function
+    bkLib.onDomLoaded(function() {
+      myNicEditor.setPanel('myNicPanel');
+
+      //make each step editable
+      $('.step:not(#overview)').each(function(){
+        myNicEditor.addInstance(this.id);
+      });
+    });
+
 
     //save original document
     $.ajax(document.URL).done(function(data){
@@ -355,7 +424,7 @@ var builder = (function () {
 
     });
 
-    $('.button.save').on('click', function () { asqEditor.save(); });
+    $('.button.save').on('click', function () { save(); });
     $('.button.overview').on('click', function (e) { 
       /*
       if (e.altKey) {
