@@ -1,70 +1,104 @@
-<h2 id="about">ABOUT</h2>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>ASQ - Home</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-<p>GUI Editor for <a href="https://github.com/bartaz/impress.js/">impress.js</a>. </p>
+    <!-- Le styles -->
+    <link href="../assets/css/bootstrap.css" rel="stylesheet">
+    <link href="../assets/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="../assets/css/asq.css" rel="stylesheet">
+    <link href="../assets/css/gh-fork-ribbon.css" rel="stylesheet">
 
-<p>There is now an online version (may include work in progress). </p>
 
-<p><a href="http://giokokos.github.io/editor/demo.html?edit">Editor demo</a></p>
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="assets/js/html5shiv.js"></script>
+    <![endif]-->
 
-<blockquote>
-<p>Add the <code>?edit</code> query after the .html extension to redirect you at the editing mode. </p>
-</blockquote>
+    <!-- Fav and touch icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="assets/ico/apple-touch-icon-57-precomposed.png">
+    <link rel="shortcut icon" href="assets/ico/favicon.png">
 
-<p>There is an <a href="https://github.com/giokokos/editor/wiki/About">About</a> page too. </p>
+  </head>
 
-<p><strong>NOTE:</strong> Everything is done on the client side therefore there isn&#8217;t any download utility for the moment. </p>
+  <body data-spy="scroll" data-target=".navbar">
 
-<h2 id="bookmarklet">BOOKMARKLET</h2>
+    <h2 id="about">ABOUT</h2>
 
-<p>Drag this to your Bookmarks bar ->
- <a href='javascript:!function(){if("undefined"==typeof window.builder){var a=document.createElement("link");a.setAttribute("rel","stylesheet"),a.setAttribute("type","text/css"),a.setAttribute("href","http://asq.inf.usi.ch/editor/dist/ASQ-Editor.min.css"),document.getElementsByTagName("head")[0].appendChild(a);var b=document.createElement("SCRIPT");b.type="text/javascript",b.src="http://asq.inf.usi.ch/editor/dist/ASQ-Editor.min.js","undefined"!=typeof b&&document.getElementsByTagName("head")[0].appendChild(b)}b.onloadDone=!1,b.onload=function(){b.onloadDone=!0,builder.bootstrap()},aEScript.onReadystatechange=function(){"loaded"!==aEScript.readyState||aEScript.onloadDone||(aEScript.onloadDone=!0,builder.bootstrap())}}();'><strong>ASQ-Editor</strong></a><br/>
- <em>(requires the modified impress.js)</em> </p>
+    <p>GUI Editor for <a href="https://github.com/bartaz/impress.js/">impress.js</a>. </p>
 
-<h2 id="features">FEATURES</h2>
+    <p>There is now an online version (may include work in progress). </p>
 
-<ul>
-<li>Create slides</li>
-<li>Delete slides</li>
-<li>Working with text (<a href="http://nicedit.com/">nicEdit</a> is integrated)
+    <p><a href="http://giokokos.github.io/editor/demo.html?edit">Editor demo</a></p>
 
-<ul>
-<li>h1/h2/&#8230;</li>
-<li>Choosing font size</li>
-<li>Left/Center/Right Alignment</li>
-<li>Bold/Italic/Links</li>
-<li>fonts</li>
-<li>uploading image</li>
-<li>changing colors</li>
-<li>changing the HTML code</li>
-</ul></li>
-<li>Choose different themes
+    <blockquote>
+    <p>Add the <code>?edit</code> query after the .html extension to redirect you at the editing mode. </p>
+    </blockquote>
 
-<ul>
-<li>Custom CSS background gradients</li>
-</ul></li>
-<li>Change position of steps (Sliders and inputs)
+    <p>There is an <a href="https://github.com/giokokos/editor/wiki/About">About</a> page too. </p>
 
-<ul>
-<li>Move</li>
-<li>Rotate (also in 3d)</li>
-<li>Scale</li>
-</ul></li>
-<li>Menu of slides</li>
-<li>Multiple selection of slides</li>
-<li>Canvas for highlighting context on presentation mode</li>
-<li>Layouts including custom algorithms</li>
-</ul>
+    <p><strong>NOTE:</strong> Everything is done on the client side therefore there isn&#8217;t any download utility for the moment. </p>
 
-<p><strong>NOTE:</strong> Impress.js is extended to support all these features. </p>
+    <h2 id="bookmarklet">BOOKMARKLET</h2>
 
-<h2 id="credits">CREDITS</h2>
+    <p>Drag this to your Bookmarks bar ->
+     <a href='javascript:!function(){if("undefined"==typeof window.builder){var a=document.createElement("link");a.setAttribute("rel","stylesheet"),a.setAttribute("type","text/css"),a.setAttribute("href","http://asq.inf.usi.ch/editor/dist/ASQ-Editor.min.css"),document.getElementsByTagName("head")[0].appendChild(a);var b=document.createElement("SCRIPT");b.type="text/javascript",b.src="http://asq.inf.usi.ch/editor/dist/ASQ-Editor.min.js","undefined"!=typeof b&&document.getElementsByTagName("head")[0].appendChild(b)}b.onloadDone=!1,b.onload=function(){b.onloadDone=!0,builder.bootstrap()},aEScript.onReadystatechange=function(){"loaded"!==aEScript.readyState||aEScript.onloadDone||(aEScript.onloadDone=!0,builder.bootstrap())}}();'><strong>ASQ-Editor</strong></a><br/>
+     <em>(requires the modified impress.js)</em> </p>
 
-<p>You can find the impress.js framework <a href="https://github.com/bartaz/impress.js/">here</a>. </p>
+    <h2 id="features">FEATURES</h2>
 
-<p>The current project is inspired and partially based on <a href="https://github.com/naugtur/builder4impress">builder4impress</a>. </p>
+    <ul>
+    <li>Create slides</li>
+    <li>Delete slides</li>
+    <li>Working with text (<a href="http://nicedit.com/">nicEdit</a> is integrated)
 
-<h2 id="license">LICENSE</h2>
+    <ul>
+    <li>h1/h2/&#8230;</li>
+    <li>Choosing font size</li>
+    <li>Left/Center/Right Alignment</li>
+    <li>Bold/Italic/Links</li>
+    <li>fonts</li>
+    <li>uploading image</li>
+    <li>changing colors</li>
+    <li>changing the HTML code</li>
+    </ul></li>
+    <li>Choose different themes
 
-<p>Copyright 2013 George Kokosioulis </p>
+    <ul>
+    <li>Custom CSS background gradients</li>
+    </ul></li>
+    <li>Change position of steps (Sliders and inputs)
 
-<p>Released under the MIT License</p>
+    <ul>
+    <li>Move</li>
+    <li>Rotate (also in 3d)</li>
+    <li>Scale</li>
+    </ul></li>
+    <li>Menu of slides</li>
+    <li>Multiple selection of slides</li>
+    <li>Canvas for highlighting context on presentation mode</li>
+    <li>Layouts including custom algorithms</li>
+    </ul>
+
+    <p><strong>NOTE:</strong> Impress.js is extended to support all these features. </p>
+
+    <h2 id="credits">CREDITS</h2>
+
+    <p>You can find the impress.js framework <a href="https://github.com/bartaz/impress.js/">here</a>. </p>
+
+    <p>The current project is inspired and partially based on <a href="https://github.com/naugtur/builder4impress">builder4impress</a>. </p>
+
+    <h2 id="license">LICENSE</h2>
+
+    <p>Copyright 2013 George Kokosioulis </p>
+
+    <p>Released under the MIT License</p>
+  </body>
+</html>
