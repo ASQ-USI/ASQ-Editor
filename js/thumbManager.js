@@ -118,6 +118,7 @@ var ThumbManager = function (options, $){
 
     $(sels.thumbsHolderId).multisortable({
       items: ".thumb-li",
+      cancel: ".thumb-edit-id",
       stop: function(e){
         var triggerSortEvent = function (el){
           var $thumbStep  = $(el).find('.' + sels.slideThumbClass)
@@ -148,7 +149,6 @@ var ThumbManager = function (options, $){
         }
       },
       click: function(e){ 
-        console.log("I'm selected.");
         var $selection = $(sels.thumbsHolderId + ' .selected');
         if($selection.length==1){
           var thumbId = $selection.attr('id')

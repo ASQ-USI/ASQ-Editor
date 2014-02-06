@@ -4,6 +4,8 @@
 function LayoutManager (options, $){
   this.options = options;
 
+  this.baseURL = "http://asq.inf.usi.ch/editor/";
+
   this.alignment = {
       horizontal : '' ,
       vertical : ''
@@ -20,15 +22,15 @@ function LayoutManager (options, $){
   , icons = {
 
       vertical : {
-        left : "img/AlignColumnLeft.png",
-        center: "img/AlignColumnCenter.png",
-        right: "img/AlignColumnRight.png",
+        left : this.baseURL + "img/AlignColumnLeft.png",
+        center: this.baseURL + "img/AlignColumnCenter.png",
+        right: this.baseURL + "img/AlignColumnRight.png",
       },
 
       horizontal : {
-        top : "img/AlignRowTop.png",
-        center: "img/AlignRowCenter.png",
-        bottom: "img/AlignRowBottom.png",
+        top : this.baseURL + "img/AlignRowTop.png",
+        center: this.baseURL + "img/AlignRowCenter.png",
+        bottom: this.baseURL + "img/AlignRowBottom.png",
       }
      
   };

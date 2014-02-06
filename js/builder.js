@@ -1,8 +1,8 @@
 
 //preserve whitespace (when exporting the source)
 dust.optimizers.format = function(ctx, node) { return node };
-
-var myNicEditor = new nicEditor();
+var baseUrl = "http://asq.inf.usi.ch/editor/";
+var myNicEditor = new nicEditor({iconsPath : baseUrl + 'js/lib/nicEditorIcons.gif'});
 
 // makes the element with the given id editable
 function makeEditable(id){ 
@@ -247,7 +247,9 @@ var builder = (function () {
 
   //bootstrap builder with impress functions
   function bootstrap(){
-    var iAPI = impress();
+    if('undefined' == typeof window.impress) return;
+
+    var iAPI = window.impress();
     builder.init({
       "goto": iAPI['goto'], //it makes me feel better this way
       creationFunction: iAPI.newStep, //future API method that adds a new step

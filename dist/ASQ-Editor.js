@@ -22609,6 +22609,8 @@ dust.parse = parser.parse;
 function LayoutManager (options, $){
   this.options = options;
 
+  this.baseURL = "http://asq.inf.usi.ch/editor/";
+
   this.alignment = {
       horizontal : '' ,
       vertical : ''
@@ -22625,15 +22627,15 @@ function LayoutManager (options, $){
   , icons = {
 
       vertical : {
-        left : "img/AlignColumnLeft.png",
-        center: "img/AlignColumnCenter.png",
-        right: "img/AlignColumnRight.png",
+        left : this.baseURL + "img/AlignColumnLeft.png",
+        center: this.baseURL + "img/AlignColumnCenter.png",
+        right: this.baseURL + "img/AlignColumnRight.png",
       },
 
       horizontal : {
-        top : "img/AlignRowTop.png",
-        center: "img/AlignRowCenter.png",
-        bottom: "img/AlignRowBottom.png",
+        top : this.baseURL + "img/AlignRowTop.png",
+        center: this.baseURL + "img/AlignRowCenter.png",
+        bottom: this.baseURL + "img/AlignRowBottom.png",
       }
      
   };
@@ -23294,6 +23296,7 @@ function LayoutManager (options, $){
 
     $(sels.thumbsHolderId).multisortable({
       items: ".thumb-li",
+      cancel: ".thumb-edit-id",
       stop: function(e){
         var triggerSortEvent = function (el){
           var $thumbStep  = $(el).find('.' + sels.slideThumbClass)
@@ -23324,7 +23327,6 @@ function LayoutManager (options, $){
         }
       },
       click: function(e){ 
-        console.log("I'm selected.");
         var $selection = $(sels.thumbsHolderId + ' .selected');
         if($selection.length==1){
           var thumbId = $selection.attr('id')
@@ -25269,8 +25271,8 @@ nicEditors.registerPlugin(nicPlugin,nicCodeOptions);
 ;
 //preserve whitespace (when exporting the source)
 dust.optimizers.format = function(ctx, node) { return node };
-
-var myNicEditor = new nicEditor();
+var baseUrl = "http://asq.inf.usi.ch/editor/";
+var myNicEditor = new nicEditor({iconsPath : baseUrl + 'js/lib/nicEditorIcons.gif'});
 
 // makes the element with the given id editable
 function makeEditable(id){ 
@@ -25515,7 +25517,9 @@ var builder = (function () {
 
   //bootstrap builder with impress functions
   function bootstrap(){
-    var iAPI = impress();
+    if('undefined' == typeof window.impress) return;
+
+    var iAPI = window.impress();
     builder.init({
       "goto": iAPI['goto'], //it makes me feel better this way
       creationFunction: iAPI.newStep, //future API method that adds a new step
