@@ -382,8 +382,6 @@ var builder = (function () {
       , slideRefId  = detail.slideRefId
       , newId = detail.newId;
 
-      console.log('detail', detail)
-
       if (newId == slideRefId) return; 
 
       //check if new id is a valid id

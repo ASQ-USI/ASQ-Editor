@@ -99,7 +99,7 @@
 				list.data('multiselectable', true)
 					.delegate(options.items, 'mousedown', mouseDown)
 					.delegate(options.items, 'click', click)
-					.disableSelection();
+					//.disableSelection();
 			}
 		})
 	};
@@ -164,7 +164,8 @@
 			});
 
 			//enable sorting
-			options.cancel = settings.items + ':not(.' + settings.selectedClass + ')';
+			options.cancel = settings.items + ':not(.' + settings.selectedClass + ') , ' + options.cancel;
+			console.log(options.cancel);
 			options.placeholder = settings.placeholder;
 			options.start = function(event, ui) {
 				if (ui.item.hasClass(settings.selectedClass)) {
@@ -234,8 +235,9 @@
 				regroup(ui.item, ui.sender);
 				settings.receive(event, ui);
 			};
-
-			list.sortable(options).disableSelection();
+			console.log(options	)
+			list.sortable(options)
+			//.disableSelection();
 		})
 	};
 

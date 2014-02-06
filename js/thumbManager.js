@@ -116,16 +116,17 @@ var ThumbManager = function (options, $){
     that.$thumbs = $("."+ this.sels.slideThumbClass);
     that.resizeThumbs();
 
+    //allow to reorder and select multiple thumbnails
     $(sels.thumbsHolderId).multisortable({
       items: ".thumb-li",
-      cancel: ".thumb-edit-id",
+      cancel:".thumb-edit-id",
+      cursor: "move",
       stop: function(e){
         var triggerSortEvent = function (el){
           var $thumbStep  = $(el).find('.' + sels.slideThumbClass)
             , thumbId       = $thumbStep.attr('id')
             , slideRefId    = $thumbStep.attr('data-references')
             , newIndex      = $(el).index();
-          console.log('trigger 4', slideRefId)
           triggerEvent(document, "thumbmanager:thumb-sorted", {
             thumbId : thumbId,
             slideRefId : slideRefId,
@@ -149,6 +150,8 @@ var ThumbManager = function (options, $){
         }
       },
       click: function(e){ 
+        if($(e.target).hasClass('thumb-edit-id')) return;
+
         var $selection = $(sels.thumbsHolderId + ' .selected');
         if($selection.length==1){
           var thumbId = $selection.attr('id')
@@ -167,9 +170,8 @@ var ThumbManager = function (options, $){
       
           triggerEvent(document, "thumbmanager:thumb-selection", {thumbIds: thumbIds, slideRefIds: slideRefIds}) 
         }
-     }
-  });
-
+      }
+    });
   }
 
   /** @function injectThumb

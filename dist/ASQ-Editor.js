@@ -18733,7 +18733,7 @@ $.widget("ui.sortable", $.ui.mouse, {
 				list.data('multiselectable', true)
 					.delegate(options.items, 'mousedown', mouseDown)
 					.delegate(options.items, 'click', click)
-					.disableSelection();
+					//.disableSelection();
 			}
 		})
 	};
@@ -18798,7 +18798,8 @@ $.widget("ui.sortable", $.ui.mouse, {
 			});
 
 			//enable sorting
-			options.cancel = settings.items + ':not(.' + settings.selectedClass + ')';
+			options.cancel = settings.items + ':not(.' + settings.selectedClass + ') , ' + options.cancel;
+			console.log(options.cancel);
 			options.placeholder = settings.placeholder;
 			options.start = function(event, ui) {
 				if (ui.item.hasClass(settings.selectedClass)) {
@@ -18868,8 +18869,9 @@ $.widget("ui.sortable", $.ui.mouse, {
 				regroup(ui.item, ui.sender);
 				settings.receive(event, ui);
 			};
-
-			list.sortable(options).disableSelection();
+			console.log(options	)
+			list.sortable(options)
+			//.disableSelection();
 		})
 	};
 
@@ -23294,16 +23296,17 @@ function LayoutManager (options, $){
     that.$thumbs = $("."+ this.sels.slideThumbClass);
     that.resizeThumbs();
 
+    //allow to reorder and select multiple thumbnails
     $(sels.thumbsHolderId).multisortable({
       items: ".thumb-li",
-      cancel: ".thumb-edit-id",
+      cancel:".thumb-edit-id",
+      cursor: "move",
       stop: function(e){
         var triggerSortEvent = function (el){
           var $thumbStep  = $(el).find('.' + sels.slideThumbClass)
             , thumbId       = $thumbStep.attr('id')
             , slideRefId    = $thumbStep.attr('data-references')
             , newIndex      = $(el).index();
-          console.log('trigger 4', slideRefId)
           triggerEvent(document, "thumbmanager:thumb-sorted", {
             thumbId : thumbId,
             slideRefId : slideRefId,
@@ -23327,6 +23330,8 @@ function LayoutManager (options, $){
         }
       },
       click: function(e){ 
+        if($(e.target).hasClass('thumb-edit-id')) return;
+
         var $selection = $(sels.thumbsHolderId + ' .selected');
         if($selection.length==1){
           var thumbId = $selection.attr('id')
@@ -23345,9 +23350,8 @@ function LayoutManager (options, $){
       
           triggerEvent(document, "thumbmanager:thumb-selection", {thumbIds: thumbIds, slideRefIds: slideRefIds}) 
         }
-     }
-  });
-
+      }
+    });
   }
 
   /** @function injectThumb
@@ -25651,8 +25655,6 @@ var builder = (function () {
       var detail    = event.originalEvent.detail
       , slideRefId  = detail.slideRefId
       , newId = detail.newId;
-
-      console.log('detail', detail)
 
       if (newId == slideRefId) return; 
 
