@@ -20,7 +20,7 @@
     aES.onloadDone=true;
     builder.bootstrap();
   };
-  aEScript.onReadystatechange=function(){
+  aES.onReadystatechange=function(){
     if(aES.readyState==='loaded'&& !aES.onloadDone){
       aES.onloadDone=true;
       builder.bootstrap();
