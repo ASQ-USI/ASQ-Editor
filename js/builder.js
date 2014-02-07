@@ -267,16 +267,24 @@ var builder = (function () {
 
     //setup niceditor. We add the current steps
     //for new slides we call the makeEditable function
-    bkLib.onDomLoaded(function() {
+    var initNicEditor = function(){
       myNicEditor.setPanel('myNicPanel');
 
       //make each step editable
       $('.step:not(#overview)').each(function(){
         myNicEditor.addInstance(this.id);
       });
-    });
+    }
 
-
+    //make sure dom is ready for us
+    if (document.readyState == "interactive" || document.readyState == "complete") {
+        initNicEditor();
+      }else{
+        bkLib.onDomLoaded(function() {
+          initNicEditor();
+        });
+      }
+    
     //save original document
     $.ajax(document.URL).done(function(data){
       //prevent scripts from executing when injected into dom
