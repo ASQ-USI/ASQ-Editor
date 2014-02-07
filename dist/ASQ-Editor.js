@@ -23829,7 +23829,6 @@ $.effects.effect.fade = function( o, done ) {
 
 			//enable sorting
 			options.cancel = settings.items + ':not(.' + settings.selectedClass + ') , ' + options.cancel;
-			console.log(options.cancel);
 			options.placeholder = settings.placeholder;
 			options.start = function(event, ui) {
 				if (ui.item.hasClass(settings.selectedClass)) {
@@ -23899,7 +23898,6 @@ $.effects.effect.fade = function( o, done ) {
 				regroup(ui.item, ui.sender);
 				settings.receive(event, ui);
 			};
-			console.log(options	)
 			list.sortable(options)
 			//.disableSelection();
 		})
