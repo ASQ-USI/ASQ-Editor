@@ -25,7 +25,7 @@ module.exports = function(grunt) {
         src: [
           'js/lib/jquery-2.1.0.js',
           'js/lib/lodash-2.4.1.js',
-          'js/lib/jquery-ui-1.10.3.custom.js',
+          'js/lib/jquery-ui-1.10.4.custom.js',
           'js/lib/jquery.multisortable.js',
           'js/lib/FileSaver.min.js',
           'js/lib/mousewheel.js',
