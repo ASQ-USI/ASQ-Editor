@@ -268,6 +268,10 @@ var builder = (function () {
     //setup niceditor. We add the current steps
     //for new slides we call the makeEditable function
     var initNicEditor = function(){
+      //make sure editor placeholder is there
+      if(! $('#myNicPanel').length){
+        $('body').append('<div id="myNicPanel" ></div>');
+      }
       myNicEditor.setPanel('myNicPanel');
 
       //make each step editable
