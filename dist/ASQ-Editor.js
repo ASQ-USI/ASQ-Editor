@@ -30322,7 +30322,11 @@ function save(){
       .unwrap()
       .removeClass('past present future active')
       .removeAttr('contenteditable')
-      .removeAttr('style');
+      .removeAttr('style')
+    .end()
+    //clear substep states
+    .find('.substep')
+    .removeClass('previous active future')
 
   var content = $clone.eq(0).html();
 
