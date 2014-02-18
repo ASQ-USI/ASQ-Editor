@@ -98,8 +98,9 @@ module.exports = function(grunt) {
   });
 
   // Default task(s).
-  grunt.registerTask('default', ['watch']);
+  grunt.registerTask('default', ['build']);
   grunt.registerTask('build', ['dust', 'concat', 'uglify', 'cssmin']);
+  grunt.registerTask('dev', ['watch']);
 
   //npm tasks
   
